@@ -6,7 +6,7 @@ import DTooltip from "discourse/float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
 import I18n from "I18n";
 
-class InlineTip extends Component {
+class InlineDivtip extends Component {
   @action
   preventDefault(event) {
     event.preventDefault();
@@ -14,7 +14,7 @@ class InlineTip extends Component {
 
   <template>
     <DTooltip
-      @identifier="inline-tip"
+      @identifier="inline-divtip"
       @interactive={{true}}
       @closeOnScroll={{false}}
       @closeOnClickOutside={{true}}
@@ -28,7 +28,7 @@ class InlineTip extends Component {
         >{{htmlSafe @data.triggerText}}</a>
       </:trigger>
       <:content>
-        {{htmlSafe @data.tipContent}}
+        {{htmlSafe @data.divtipContent}}
       </:content>
     </DTooltip>
   </template>
@@ -50,7 +50,7 @@ export default apiInitializer("0.11.1", (api) => {
     (element, helper) => {
       processTips(element, helper);
     },
-    { id: "inline-tips", onlyStream: true }
+    { id: "inline-divtips", onlyStream: true }
   );
 
   // Add composer toolbar button
@@ -99,12 +99,12 @@ function insertTip(toolbarEvent, api) {
 
   const triggerText = selectedText || "trigger text";
   
-  // Use a span with special class that users write in markdown
-  const insertion = `<span data-tip="${triggerText}">
+  // Use a DIV with special class that users write in markdown
+  const insertion = `<div data-tip="${triggerText}">
 
 Tooltip content with **markdown** and <strong>HTML</strong>
 
-</span>`;
+</div>`;
 
   if (typeof model.appendText === "function") {
     model.appendText(insertion);
@@ -112,7 +112,7 @@ Tooltip content with **markdown** and <strong>HTML</strong>
 }
 
 function processTips(element, helper) {
-  if (!element || element.classList.contains("inline-tips-processed")) {
+  if (!element || element.classList.contains("inline-divtips-processed")) {
     return;
   }
 
@@ -120,44 +120,44 @@ function processTips(element, helper) {
     return;
   }
 
-  // Find all spans with data-tip attribute
-  const tipSpans = element.querySelectorAll('span[data-tip]');
+  // Find all DIVs with data-tip attribute
+  const tipDivs = element.querySelectorAll('div[data-tip]');
   
-  if (tipSpans.length === 0) {
+  if (tipDivs.length === 0) {
     return;
   }
 
-  tipSpans.forEach((span) => {
+  tipDivs.forEach((div) => {
     // Skip if already processed
-    if (span.classList.contains('inline-tip')) {
+    if (div.classList.contains('inline-divtip')) {
       return;
     }
     
-    const triggerText = span.getAttribute('data-tip');
+    const triggerText = div.getAttribute('data-tip');
     
     if (!triggerText) {
       return;
     }
 
-    // Get the content (innerHTML of the span)
-    const tipContent = span.innerHTML.trim();
+    // Get the content (innerHTML of the div)
+    const divtipContent = div.innerHTML.trim();
     
-    if (!tipContent) {
+    if (!divtipContent) {
       return;
     }
 
     // Create tooltip component
-    const tipComponent = document.createElement('span');
-    tipComponent.className = 'inline-tip';
+    const divtipComponent = document.createElement('div');
+    divtipComponent.className = 'inline-divtip';
     
-    helper.renderGlimmer(tipComponent, InlineTip, {
+    helper.renderGlimmer(divtipComponent, InlineDivtip, {
       triggerText: triggerText,
-      tipContent: tipContent
+      divtipContent: divtipContent
     });
 
-    // Replace the span with our tooltip
-    span.parentNode.replaceChild(tipComponent, span);
+    // Replace the div with our tooltip
+    div.parentNode.replaceChild(divtipComponent, div);
   });
   
-  element.classList.add("inline-tips-processed");
+  element.classList.add("inline-divtips-processed");
 }
