@@ -21,7 +21,7 @@ class InlineDivtip extends Component {
     >
       <:trigger>
         <a
-          class="expand-tip"
+          class="expand-divtip"
           href
           role="button"
           {{on "click" this.preventDefault}}
@@ -57,7 +57,7 @@ export default apiInitializer("0.11.1", (api) => {
   const composerApi = api.composer || api;
   if (composerApi.addComposerToolbarPopupMenuOption) {
     composerApi.addComposerToolbarPopupMenuOption({
-      id: "insert-tip",
+      id: "insert-divtip",
       icon: "tooltip-icon",
       label: "insert_tooltip_label",
       action(toolbarEvent) {
@@ -100,7 +100,7 @@ function insertTip(toolbarEvent, api) {
   const triggerText = selectedText || "trigger text";
   
   // Use a DIV with special class that users write in markdown
-  const insertion = `<div data-tip="${triggerText}">
+  const insertion = `<div data-divtip="${triggerText}">
 
 Tooltip content with **markdown** and <strong>HTML</strong>
 
@@ -120,8 +120,8 @@ function processTips(element, helper) {
     return;
   }
 
-  // Find all DIVs with data-tip attribute
-  const tipDivs = element.querySelectorAll('div[data-tip]');
+  // Find all DIVs with data-divtip attribute
+  const tipDivs = element.querySelectorAll('div[data-divtip]');
   
   if (tipDivs.length === 0) {
     return;
@@ -133,7 +133,7 @@ function processTips(element, helper) {
       return;
     }
     
-    const triggerText = div.getAttribute('data-tip');
+    const triggerText = div.getAttribute('data-divtip');
     
     if (!triggerText) {
       return;
