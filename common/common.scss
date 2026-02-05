@@ -53,12 +53,13 @@
   em, i {
     font-style: italic;
   }
-    
+
   code {
     background: var(--primary-very-low);
-    padding: 0.2em 0.4em;
+    padding: .2em .4em;
     border-radius: 3px;
-    font-size: 0.9em;
+    font-size: .9em;
+    white-space: break-spaces;
   }
 }
 
