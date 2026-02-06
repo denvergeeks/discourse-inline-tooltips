@@ -1,287 +1,335 @@
-/* Discourse Inline Tooltips Theme Component - DIV Version */
+/* Discourse Inline Tooltips - Pure CSS Solution */
 
 .inline-divtip {
-  display: inline;
+  position: relative;
+  display: inline-block;
   
   a.expand-divtip {
     text-decoration: underline;
     text-decoration-style: dotted;
     color: var(--tertiary);
     cursor: help;
+    display: inline;
     
     &:hover {
       color: var(--tertiary-high);
       text-decoration-style: solid;
     }
   }
-}
-
-/* Tippy.js tooltip content styling */
-.tippy-box {
-  .inline-divtip-content {
-    overflow-wrap: break-word;
-    font-size: var(--font-down-1);
+  
+  /* Tooltip content - hidden by default */
+  .divtip-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: var(--secondary);
+    border: 1px solid var(--primary-low);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    
+    min-width: 300px;
+    max-width: 600px;
     max-height: 600px;
     overflow: auto;
-    padding: 8px;
+    
+    z-index: 1000;
+    pointer-events: none;
+    
+    /* Smooth fade in/out */
+    transition: visibility 0s linear 0.3s, opacity 0.3s linear;
+    
+    /* Arrow pointing down to trigger */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: var(--secondary);
+    }
+  }
+  
+  /* Show tooltip on hover */
+  &:hover .divtip-content {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.1s;
+  }
+  
+  /* Keep tooltip visible when hovering over it */
+  .divtip-content:hover {
+    visibility: visible;
+    opacity: 1;
+  }
+}
 
-    img {
-      height: auto;
-      max-width: 100%;
-      display: block;
-      margin: 0.5em 0;
-    }
+/* Tooltip content styling */
+.divtip-content {
+  color: var(--primary);
+  font-size: var(--font-down-1);
+  line-height: 1.5;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
-    p {
-      margin: 0 0 0.75em 0;
-      display: block;
-      
-      &:first-child {
-        margin-top: 0;
-      }
-      
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-      display: block;
-      margin: 1em 0 0.5em 0;
-      font-weight: bold;
-      line-height: 1.3;
-      
-      &:first-child {
-        margin-top: 0;
-      }
-      
-      // Hide anchor links in tooltips
-      a.anchor {
-        display: none;
-      }
-    }
-    
-    h3 {
-      font-size: 1.17em;
-    }
-    
-    hr {
-      display: block;
-      margin: 1em 0;
-      border: 0;
-      border-top: 1px solid var(--primary-low);
-      height: 0;
-    }
-    
-    strong, b {
-      font-weight: bold;
-    }
-    
-    em, i {
-      font-style: italic;
-    }
+  img {
+    height: auto;
+    max-width: 100%;
+    display: block;
+    margin: 0.5em 0;
+  }
 
+  p {
+    margin: 0 0 0.75em 0;
+    display: block;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    display: block;
+    margin: 1em 0 0.5em 0;
+    font-weight: bold;
+    line-height: 1.3;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    // Hide anchor links in tooltips
+    a.anchor {
+      display: none !important;
+    }
+  }
+  
+  h1 { font-size: 1.5em; }
+  h2 { font-size: 1.4em; }
+  h3 { font-size: 1.3em; }
+  h4 { font-size: 1.2em; }
+  h5 { font-size: 1.1em; }
+  h6 { font-size: 1em; }
+  
+  hr {
+    display: block;
+    margin: 1em 0;
+    border: 0;
+    border-top: 1px solid var(--primary-low);
+    height: 0;
+  }
+  
+  strong, b {
+    font-weight: bold;
+  }
+  
+  em, i {
+    font-style: italic;
+  }
+
+  code {
+    background: var(--primary-very-low);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
+    white-space: pre-wrap;
+  }
+  
+  pre {
+    display: block;
+    background: var(--primary-very-low);
+    padding: 1em;
+    border-radius: 4px;
+    overflow: auto;
+    margin: 0.5em 0;
+    
     code {
+      background: none;
+      padding: 0;
+    }
+  }
+  
+  ul, ol {
+    display: block;
+    margin: 0.5em 0;
+    padding-left: 2em;
+  }
+  
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+  }
+  
+  ol {
+    list-style-type: decimal;
+    list-style-position: outside;
+  }
+  
+  li {
+    display: list-item;
+    margin: 0.25em 0;
+  }
+  
+  blockquote {
+    display: block;
+    border-left: 4px solid var(--primary-low);
+    padding-left: 1em;
+    margin: 0.5em 0;
+    color: var(--primary-medium);
+  }
+  
+  // Support for your custom theme data attributes
+  div[data-theme-boxed],
+  div[data-theme-boxed-5],
+  div[data-theme-boxed-10],
+  div[data-theme-boxed-15],
+  div[data-theme-boxed-20],
+  div[data-theme-boxed-25],
+  div[data-theme-boxed-30],
+  div[data-theme-boxed-33],
+  div[data-theme-boxed-35],
+  div[data-theme-boxed-40],
+  div[data-theme-boxed-45],
+  div[data-theme-boxed-50],
+  div[data-theme-boxed-55],
+  div[data-theme-boxed-60],
+  div[data-theme-boxed-65],
+  div[data-theme-boxed-66],
+  div[data-theme-boxed-70],
+  div[data-theme-boxed-75],
+  div[data-theme-boxed-80],
+  div[data-theme-boxed-85],
+  div[data-theme-boxed-90],
+  div[data-theme-boxed-95] {
+    display: block;
+    margin: 0.5em 0;
+  }
+  
+  div[data-theme-scrollable] {
+    display: block;
+    margin: 0.5em 0;
+    max-height: 300px;
+    overflow: auto;
+    
+    .scrollable-content-inner {
+      display: block;
+    }
+  }
+  
+  iframe {
+    display: block;
+    max-width: 100%;
+    margin: 0.5em 0;
+    border: 0;
+  }
+  
+  table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.5em 0;
+    font-size: 0.9em;
+    
+    thead { display: table-header-group; }
+    tbody { display: table-row-group; }
+    tr { display: table-row; }
+    
+    th, td {
+      display: table-cell;
+      border: 1px solid var(--primary-low);
+      padding: 0.5em;
+      text-align: left;
+    }
+    
+    th {
       background: var(--primary-very-low);
-      padding: 0.2em 0.4em;
-      border-radius: 3px;
-      font-size: 0.9em;
-      font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
-      white-space: pre-wrap;
+      font-weight: bold;
+    }
+  }
+  
+  .hljs {
+    background: var(--primary-very-low);
+    display: block;
+  }
+  
+  .codeblock-buttons {
+    position: relative;
+    
+    .codeblock-button-wrapper {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  
+  .lightbox-wrapper {
+    display: block;
+    margin: 0.5em 0;
+    
+    img {
+      cursor: zoom-in;
     }
     
-    pre {
-      display: block;
-      background: var(--primary-very-low);
-      padding: 1em;
-      border-radius: 4px;
-      overflow: auto;
-      margin: 0.5em 0;
-      
-      code {
-        background: none;
-        padding: 0;
-      }
-    }
-    
-    ul, ol {
-      display: block;
-      margin: 0.5em 0;
-      padding-left: 2em;
-    }
-    
-    ul {
-      list-style-type: disc;
-      list-style-position: outside;
-    }
-    
-    ol {
-      list-style-type: decimal;
-      list-style-position: outside;
-    }
-    
-    li {
-      display: list-item;
-      margin: 0.25em 0;
-    }
-    
-    blockquote {
-      display: block;
-      border-left: 4px solid var(--primary-low);
-      padding-left: 1em;
-      margin: 0.5em 0;
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-size: 0.85em;
       color: var(--primary-medium);
+      margin-top: 0.25em;
     }
+  }
+  
+  .onebox, .video-onebox {
+    display: block;
+    margin: 0.5em 0;
+    max-width: 100%;
     
-    // Support for your custom theme data attributes
-    div[data-theme-boxed],
-    div[data-theme-boxed-5],
-    div[data-theme-boxed-10],
-    div[data-theme-boxed-15],
-    div[data-theme-boxed-20],
-    div[data-theme-boxed-25],
-    div[data-theme-boxed-30],
-    div[data-theme-boxed-33],
-    div[data-theme-boxed-35],
-    div[data-theme-boxed-40],
-    div[data-theme-boxed-45],
-    div[data-theme-boxed-50],
-    div[data-theme-boxed-55],
-    div[data-theme-boxed-60],
-    div[data-theme-boxed-65],
-    div[data-theme-boxed-66],
-    div[data-theme-boxed-70],
-    div[data-theme-boxed-75],
-    div[data-theme-boxed-80],
-    div[data-theme-boxed-85],
-    div[data-theme-boxed-90],
-    div[data-theme-boxed-95] {
-      display: block;
-      margin: 0.5em 0;
-      // Your theme styles will apply
-    }
-    
-    div[data-theme-scrollable] {
-      display: block;
-      margin: 0.5em 0;
-      max-height: 300px;
-      overflow: auto;
-      
-      .scrollable-content-inner {
-        display: block;
-      }
-    }
-    
-    iframe {
-      display: block;
+    video {
       max-width: 100%;
-      margin: 0.5em 0;
-      border: 0;
+      height: auto;
     }
+  }
+  
+  a {
+    color: var(--tertiary);
+    text-decoration: underline;
     
-    table {
-      display: table;
-      border-collapse: collapse;
-      width: 100%;
-      margin: 0.5em 0;
-      font-size: 0.9em;
-      
-      thead {
-        display: table-header-group;
-      }
-      
-      tbody {
-        display: table-row-group;
-      }
-      
-      tr {
-        display: table-row;
-      }
-      
-      th, td {
-        display: table-cell;
-        border: 1px solid var(--primary-low);
-        padding: 0.5em;
-        text-align: left;
-      }
-      
-      th {
-        background: var(--primary-very-low);
-        font-weight: bold;
-      }
+    &:hover {
+      color: var(--tertiary-high);
     }
-    
-    // Code blocks with syntax highlighting
-    .hljs {
-      background: var(--primary-very-low);
-      display: block;
-    }
-    
-    // Codeblock buttons
-    .codeblock-buttons {
-      position: relative;
-      
-      .codeblock-button-wrapper {
-        position: absolute;
-        right: 0;
-        top: 0;
-      }
-    }
-    
-    // Lightbox images
-    .lightbox-wrapper {
-      display: block;
-      margin: 0.5em 0;
-      
-      img {
-        cursor: zoom-in;
-      }
-      
-      .meta {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        font-size: 0.85em;
-        color: var(--primary-medium);
-        margin-top: 0.25em;
-      }
-    }
-    
-    // Onebox embeds
-    .onebox {
-      display: block;
-      margin: 0.5em 0;
-      max-width: 100%;
-    }
-    
-    .video-onebox {
-      display: block;
-      
-      video {
-        max-width: 100%;
-        height: auto;
-      }
-    }
-    
-    // Links
-    a {
-      color: var(--tertiary);
-      text-decoration: underline;
-      
-      &:hover {
-        color: var(--tertiary-high);
-      }
-      
-      &:visited {
-        color: var(--tertiary);
-      }
-    }
-    
-    // Emoji
-    .emoji {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
+  }
+  
+  .emoji {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .inline-divtip {
+    .divtip-content {
+      left: 0;
+      right: 0;
+      transform: none;
+      min-width: auto;
+      max-width: 90vw;
+      margin-left: 5vw;
+      margin-right: 5vw;
     }
   }
 }
