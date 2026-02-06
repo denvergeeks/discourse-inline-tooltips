@@ -354,3 +354,31 @@ body.dark-mode {
     max-width: 90vw;
   }
 }
+
+/* Make paragraphs before tooltip appear inline */
+p:has(+ .inline-divtip-wrapper) {
+  display: inline;
+  margin: 0;
+}
+
+/* Make the tooltip wrapper inline */
+.inline-divtip-wrapper {
+  display: inline;
+}
+
+/* Make paragraphs after tooltip appear inline */
+.inline-divtip-wrapper + p {
+  display: inline;
+  margin: 0;
+}
+
+/* Add space before wrapper */
+p + .inline-divtip-wrapper::before {
+  content: ' ';
+}
+
+/* Add space after wrapper */
+.inline-divtip-wrapper + p::before {
+  content: ' ';
+}
+
