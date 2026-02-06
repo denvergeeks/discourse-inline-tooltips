@@ -1,10 +1,7 @@
 import { apiInitializer } from "discourse/lib/api";
-import { bind } from "discourse-common/utils/decorators";
+import { schedule } from "@ember/runloop";
 
 export default apiInitializer("1.14.0", (api) => {
-  // Store references to active tooltips
-  const tooltipInstances = new Map();
-
   // Decorate cooked content
   api.decorateCookedElement(
     (element) => {
@@ -32,7 +29,7 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Get the content (innerHTML of the div)
+        // Get the content (innerHTML of the div) - this is already cooked HTML
         const divtipContent = div.innerHTML.trim();
         
         if (!divtipContent) {
@@ -43,52 +40,71 @@ export default apiInitializer("1.14.0", (api) => {
         const wrapper = document.createElement('span');
         wrapper.className = 'inline-divtip';
         
-        // Create trigger link
-        const trigger = document.createElement('a');
-        trigger.href = '#';
-        trigger.className = 'expand-divtip';
-        trigger.role = 'button';
-        trigger.innerHTML = triggerText;
-        trigger.setAttribute('data-tooltip', divtipContent);
-        
-        // Use Float Kit's tooltip attribute
-        trigger.setAttribute('data-tooltip-interactive', 'true');
-        trigger.setAttribute('data-tooltip-max-width', '600');
+        // Create trigger link with Float Kit data attributes
+        const trigger = document.createElement('span');
+        trigger.className = 'fk-d-tooltip__trigger';
         trigger.setAttribute('data-identifier', 'inline-divtip');
+        trigger.setAttribute('data-trigger', '');
+        trigger.setAttribute('role', 'button');
+        trigger.setAttribute('aria-expanded', 'false');
         
-        // Prevent default click behavior
-        trigger.addEventListener('click', (e) => {
+        const triggerContainer = document.createElement('span');
+        triggerContainer.className = 'fk-d-tooltip__trigger-container';
+        
+        const triggerLink = document.createElement('a');
+        triggerLink.href = '#';
+        triggerLink.className = 'expand-divtip';
+        triggerLink.role = 'button';
+        triggerLink.textContent = triggerText;
+        triggerLink.addEventListener('click', (e) => {
           e.preventDefault();
         });
         
+        triggerContainer.appendChild(triggerLink);
+        trigger.appendChild(triggerContainer);
+        
+        // Create the tooltip content element (hidden, will be shown by Float Kit)
+        const tooltipContent = document.createElement('div');
+        tooltipContent.className = 'fk-d-tooltip__content';
+        tooltipContent.setAttribute('data-identifier', 'inline-divtip');
+        tooltipContent.style.display = 'none';
+        
+        const tooltipInner = document.createElement('div');
+        tooltipInner.className = 'fk-d-tooltip__inner-content';
+        tooltipInner.innerHTML = divtipContent; // HTML content goes here
+        
+        tooltipContent.appendChild(tooltipInner);
+        
         wrapper.appendChild(trigger);
+        wrapper.appendChild(tooltipContent);
         
         // Replace the div with our inline tooltip
         if (div.parentNode) {
           div.parentNode.replaceChild(wrapper, div);
         }
         
-        // Initialize Float Kit tooltip programmatically
-        if (api.container) {
-          try {
-            const tooltipService = api.container.lookup('service:tooltip');
-            if (tooltipService && tooltipService.register) {
-              tooltipService.register(trigger, {
-                identifier: 'inline-divtip',
-                interactive: true,
-                closeOnScroll: false,
-                closeOnClickOutside: true,
-                maxWidth: 600,
-                content: divtipContent,
-                triggers: ['click', 'hover']
-              });
-              
-              tooltipInstances.set(trigger, tooltipService);
+        // Initialize Float Kit after DOM insertion
+        schedule('afterRender', () => {
+          if (api.container) {
+            try {
+              const menu = api.container.lookup('service:menu');
+              if (menu && menu.register) {
+                // Register with Float Kit's menu service
+                menu.register(trigger, {
+                  identifier: 'inline-divtip',
+                  component: tooltipContent,
+                  interactive: true,
+                  triggers: ['click', 'hover'],
+                  untriggers: ['click', 'hover'],
+                  offset: 10
+                });
+              }
+            } catch (e) {
+              // Silently fail - tooltip still works via CSS
+              console.debug("Float Kit service not available:", e);
             }
-          } catch (e) {
-            console.warn("Could not initialize tooltip service:", e);
           }
-        }
+        });
         
         div.classList.add('inline-divtip-processed');
       });
@@ -117,15 +133,5 @@ Tooltip content with **markdown** and <strong>HTML</strong>
 
       toolbarEvent.addText(insertion);
     }
-  });
-  
-  // Cleanup on teardown
-  api.onPageChange(() => {
-    tooltipInstances.forEach((service, element) => {
-      if (service.unregister) {
-        service.unregister(element);
-      }
-    });
-    tooltipInstances.clear();
   });
 });
