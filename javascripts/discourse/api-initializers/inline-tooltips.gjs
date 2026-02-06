@@ -1,5 +1,4 @@
 import { apiInitializer } from "discourse/lib/api";
-import { schedule } from "@ember/runloop";
 
 export default apiInitializer("1.14.0", (api) => {
   // Decorate cooked content
@@ -40,71 +39,52 @@ export default apiInitializer("1.14.0", (api) => {
         const wrapper = document.createElement('span');
         wrapper.className = 'inline-divtip';
         
-        // Create trigger link with Float Kit data attributes
-        const trigger = document.createElement('span');
-        trigger.className = 'fk-d-tooltip__trigger';
-        trigger.setAttribute('data-identifier', 'inline-divtip');
-        trigger.setAttribute('data-trigger', '');
-        trigger.setAttribute('role', 'button');
-        trigger.setAttribute('aria-expanded', 'false');
+        // Create trigger link
+        const trigger = document.createElement('a');
+        trigger.href = '#';
+        trigger.className = 'expand-divtip';
+        trigger.role = 'button';
+        trigger.textContent = triggerText;
         
-        const triggerContainer = document.createElement('span');
-        triggerContainer.className = 'fk-d-tooltip__trigger-container';
+        // Store the HTML content in a data attribute (we'll parse it on show)
+        trigger.setAttribute('data-divtip-html', divtipContent);
         
-        const triggerLink = document.createElement('a');
-        triggerLink.href = '#';
-        triggerLink.className = 'expand-divtip';
-        triggerLink.role = 'button';
-        triggerLink.textContent = triggerText;
-        triggerLink.addEventListener('click', (e) => {
+        trigger.addEventListener('click', (e) => {
           e.preventDefault();
         });
         
-        triggerContainer.appendChild(triggerLink);
-        trigger.appendChild(triggerContainer);
-        
-        // Create the tooltip content element (hidden, will be shown by Float Kit)
-        const tooltipContent = document.createElement('div');
-        tooltipContent.className = 'fk-d-tooltip__content';
-        tooltipContent.setAttribute('data-identifier', 'inline-divtip');
-        tooltipContent.style.display = 'none';
-        
-        const tooltipInner = document.createElement('div');
-        tooltipInner.className = 'fk-d-tooltip__inner-content';
-        tooltipInner.innerHTML = divtipContent; // HTML content goes here
-        
-        tooltipContent.appendChild(tooltipInner);
-        
         wrapper.appendChild(trigger);
-        wrapper.appendChild(tooltipContent);
         
         // Replace the div with our inline tooltip
         if (div.parentNode) {
           div.parentNode.replaceChild(wrapper, div);
         }
         
-        // Initialize Float Kit after DOM insertion
-        schedule('afterRender', () => {
-          if (api.container) {
-            try {
-              const menu = api.container.lookup('service:menu');
-              if (menu && menu.register) {
-                // Register with Float Kit's menu service
-                menu.register(trigger, {
-                  identifier: 'inline-divtip',
-                  component: tooltipContent,
-                  interactive: true,
-                  triggers: ['click', 'hover'],
-                  untriggers: ['click', 'hover'],
-                  offset: 10
-                });
-              }
-            } catch (e) {
-              // Silently fail - tooltip still works via CSS
-              console.debug("Float Kit service not available:", e);
+        // Use Tippy.js directly (what Discourse uses for tooltips)
+        if (window.tippy) {
+          const tippyInstance = window.tippy(trigger, {
+            content: divtipContent,
+            allowHTML: true,
+            interactive: true,
+            trigger: 'mouseenter click',
+            hideOnClick: false,
+            placement: 'top',
+            maxWidth: 600,
+            theme: 'light-border',
+            arrow: true,
+            appendTo: document.body,
+            onShow(instance) {
+              // Create a proper DOM structure for the content
+              const contentDiv = document.createElement('div');
+              contentDiv.className = 'inline-divtip-content';
+              contentDiv.innerHTML = trigger.getAttribute('data-divtip-html');
+              instance.setContent(contentDiv);
             }
-          }
-        });
+          });
+          
+          // Store instance for cleanup
+          trigger._tippyInstance = tippyInstance;
+        }
         
         div.classList.add('inline-divtip-processed');
       });
@@ -115,6 +95,16 @@ export default apiInitializer("1.14.0", (api) => {
       id: "inline-divtips"
     }
   );
+
+  // Cleanup on page change
+  api.onPageChange(() => {
+    document.querySelectorAll('.expand-divtip').forEach(trigger => {
+      if (trigger._tippyInstance) {
+        trigger._tippyInstance.destroy();
+        delete trigger._tippyInstance;
+      }
+    });
+  });
 
   // Add composer toolbar button
   api.addComposerToolbarPopupMenuOption({
