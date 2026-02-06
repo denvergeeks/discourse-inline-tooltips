@@ -1,9 +1,43 @@
+import Component from "@glimmer/component";
+import { on } from "@ember/modifier";
+import { action } from "@ember/object";
+import { htmlSafe } from "@ember/template";
+import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
+
+class InlineDivtip extends Component {
+  @action
+  preventDefault(event) {
+    event.preventDefault();
+  }
+
+  <template>
+    <DTooltip
+      @identifier="inline-divtip"
+      @interactive={{true}}
+      @closeOnScroll={{false}}
+      @closeOnClickOutside={{true}}
+      @maxWidth={{600}}
+    >
+      <:trigger>
+        <a
+          class="expand-divtip"
+          href
+          role="button"
+          {{on "click" this.preventDefault}}
+        >{{htmlSafe @data.triggerText}}</a>
+      </:trigger>
+      <:content>
+        {{htmlSafe @data.divtipContent}}
+      </:content>
+    </DTooltip>
+  </template>
+}
 
 export default apiInitializer("1.14.0", (api) => {
   // Decorate cooked content
   api.decorateCookedElement(
-    (element) => {
+    (element, helper) => {
       // Skip if already processed
       if (!element || element.classList.contains("inline-divtips-processed")) {
         return;
@@ -35,33 +69,19 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create wrapper div (needs to be positioned)
-        const wrapper = document.createElement('div');
-        wrapper.className = 'inline-divtip';
+        // Create wrapper span
+        const wrapper = document.createElement('span');
+        wrapper.className = 'inline-divtip-wrapper';
         
-        // Create trigger link
-        const trigger = document.createElement('a');
-        trigger.href = '#';
-        trigger.className = 'expand-divtip';
-        trigger.role = 'button';
-        trigger.textContent = triggerText;
-        
-        trigger.addEventListener('click', (e) => {
-          e.preventDefault();
+        // Use helper.renderGlimmer to render the component
+        const componentElement = helper.renderGlimmer(wrapper, InlineDivtip, {
+          triggerText: triggerText,
+          divtipContent: divtipContent
         });
         
-        // Create tooltip content container
-        const tooltipBox = document.createElement('div');
-        tooltipBox.className = 'divtip-content';
-        tooltipBox.innerHTML = divtipContent;
-        
-        // Assemble
-        wrapper.appendChild(trigger);
-        wrapper.appendChild(tooltipBox);
-        
-        // Replace the div with our wrapper
+        // Replace the div with our component
         if (div.parentNode) {
-          div.parentNode.replaceChild(wrapper, div);
+          div.parentNode.replaceChild(componentElement, div);
         }
         
         div.classList.add('inline-divtip-processed');
