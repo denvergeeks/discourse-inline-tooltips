@@ -1,51 +1,13 @@
-import Component from "@glimmer/component";
-import { on } from "@ember/modifier";
-import { action } from "@ember/object";
-import { htmlSafe } from "@ember/template";
-import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
-import { renderInElement } from "discourse/lib/render-glimmer";
-
-class InlineTip extends Component {
-  @action
-  preventDefault(event) {
-    event.preventDefault();
-  }
-
-  <template>
-    <span class="inline-tip">
-      <DTooltip
-        @identifier="inline-tip"
-        @interactive={{true}}
-        @closeOnScroll={{false}}
-        @closeOnClickOutside={{true}}
-      >
-        <:trigger>
-          <a
-            class="expand-tip"
-            href
-            role="button"
-            {{on "click" this.preventDefault}}
-          >{{htmlSafe @data.triggerText}}</a>
-        </:trigger>
-        <:content>
-          {{htmlSafe @data.tipContent}}
-        </:content>
-      </DTooltip>
-    </span>
-  </template>
-}
 
 export default apiInitializer("1.14.0", (api) => {
   // Decorate cooked content
   api.decorateCookedElement(
     (element) => {
-      // Skip if already processed
       if (!element || element.classList.contains("inline-tips-processed")) {
         return;
       }
 
-      // Find all spans with data-tip attribute
       const tipSpans = element.querySelectorAll('span[data-tip]');
       
       if (tipSpans.length === 0) {
@@ -53,35 +15,37 @@ export default apiInitializer("1.14.0", (api) => {
       }
 
       tipSpans.forEach((span) => {
-        // Skip if already processed
-        if (span.classList.contains('inline-tip-wrapper')) {
+        if (span.classList.contains('inline-tip')) {
           return;
         }
         
         const triggerText = span.getAttribute('data-tip');
-        
-        if (!triggerText) {
-          return;
-        }
-
-        // Get the content (innerHTML of the span)
         const tipContent = span.innerHTML.trim();
         
-        if (!tipContent) {
+        if (!triggerText || !tipContent) {
           return;
         }
 
-        // Create wrapper for tooltip
         const wrapper = document.createElement('span');
-        wrapper.className = 'inline-tip-wrapper';
+        wrapper.className = 'inline-tip';
+        wrapper.setAttribute('data-tooltip-content', tipContent);
         
-        // Use renderInElement for widget-free rendering
-        renderInElement(wrapper, InlineTip, {
-          triggerText: triggerText,
-          tipContent: tipContent
-        });
-
-        // Replace the span with our tooltip
+        const trigger = document.createElement('a');
+        trigger.href = '#';
+        trigger.className = 'expand-tip';
+        trigger.innerHTML = triggerText;
+        trigger.onclick = (e) => {
+          e.preventDefault();
+          wrapper.classList.toggle('tip-open');
+        };
+        
+        const tooltip = document.createElement('span');
+        tooltip.className = 'tip-content';
+        tooltip.innerHTML = tipContent;
+        
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(tooltip);
+        
         if (span.parentNode) {
           span.parentNode.replaceChild(wrapper, span);
         }
@@ -89,13 +53,9 @@ export default apiInitializer("1.14.0", (api) => {
       
       element.classList.add("inline-tips-processed");
     },
-    { 
-      id: "inline-tips",
-      onlyStream: false
-    }
+    { id: "inline-tips" }
   );
 
-  // Add composer toolbar button
   api.addComposerToolbarPopupMenuOption({
     id: "insert-tip",
     icon: "circle-info",
