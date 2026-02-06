@@ -1,12 +1,12 @@
 /* Discourse Inline Tooltips - Float Kit DTooltip Version */
 
 /* Wrapper is inline so tooltip trigger stays on same line */
-.inline-divtip-wrapper {
+.inline-tip-wrapper {
   display: inline;
 }
 
 /* Tooltip trigger styling */
-.expand-divtip {
+.expand-tip {
   text-decoration: underline;
   text-decoration-style: dotted;
   color: var(--tertiary);
@@ -19,7 +19,7 @@
 }
 
 /* Float Kit tooltip content styling */
-.fk-d-tooltip__content[data-identifier="inline-divtip"] {
+.fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   max-width: 600px;
@@ -340,7 +340,7 @@
 
 /* Dark mode adjustments */
 body.dark-mode {
-  .expand-divtip {
+  .expand-tip {
     color: var(--tertiary);
     
     &:hover {
@@ -351,35 +351,35 @@ body.dark-mode {
 
 /* Mobile responsive - adjust tooltip max-width on small screens */
 @media (max-width: 768px) {
-  .fk-d-tooltip__content[data-identifier="inline-divtip"] {
+  .fk-d-tooltip__content[data-identifier="inline-tip"] {
     max-width: 90vw;
   }
 }
 
 /* Make paragraphs before tooltip appear inline */
-p:has(+ .inline-divtip-wrapper) {
+p:has(+ .inline-tip-wrapper) {
   display: inline;
   margin: 0;
 }
 
 /* Make the tooltip wrapper inline */
-.inline-divtip-wrapper {
+.inline-tip-wrapper {
   display: inline;
 }
 
 /* Make paragraphs after tooltip appear inline */
-.inline-divtip-wrapper + p {
+.inline-tip-wrapper + p {
   display: inline;
   margin: 0;
 }
 
 /* Add space before wrapper */
-p + .inline-divtip-wrapper::before {
+p + .inline-tip-wrapper::before {
   content: ' ';
 }
 
 /* Add space after wrapper */
-.inline-divtip-wrapper + p::before {
+.inline-tip-wrapper + p::before {
   content: ' ';
 }
 
