@@ -1,7 +1,6 @@
-/* Discourse Inline Tooltips Theme Component - DIV Version */
+/* Discourse Inline Tooltips Theme Component - DIV Version with Float Kit */
 
 .inline-divtip {
-  position: relative;
   display: inline;
   
   a.expand-divtip {
@@ -15,50 +14,20 @@
       text-decoration-style: solid;
     }
   }
-  
-  /* Tooltip content - hidden by default */
-  .divtip-content {
-    display: none;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-bottom: 8px;
-    padding: 16px;
-    background: var(--secondary);
-    border: 1px solid var(--primary-low);
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 1000;
-    min-width: 300px;
-    max-width: 600px;
-    max-height: 600px;
-    overflow: auto;
-    font-size: var(--font-down-1);
-    
-    /* Arrow pointing down */
-    &::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 8px solid transparent;
-      border-top-color: var(--secondary);
-    }
-  }
-  
-  /* Show tooltip when open */
-  &.divtip-open .divtip-content {
-    display: block;
-  }
 }
 
-/* Tooltip content styling */
-.divtip-content {
+/* Float Kit tooltip content styling for our tooltips */
+.fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
-  word-wrap: break-word;
+  font-size: var(--font-down-1);
   
+  .fk-d-tooltip__inner-content {
+    display: block;
+    overflow: auto;
+    max-height: 600px;
+    padding: 4px;
+  }
+
   img {
     height: auto;
     max-width: 100%;
@@ -81,6 +50,8 @@
   h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
     margin-bottom: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
     
     &:first-child {
       margin-top: 0;
@@ -114,6 +85,7 @@
     padding: 1em;
     border-radius: 4px;
     overflow: auto;
+    margin: 0.5em 0;
     
     code {
       background: none;
@@ -126,6 +98,10 @@
     padding-left: 2em;
   }
   
+  li {
+    margin: 0.25em 0;
+  }
+  
   blockquote {
     border-left: 4px solid var(--primary-low);
     padding-left: 1em;
@@ -133,30 +109,76 @@
     color: var(--primary-medium);
   }
   
+  // Support for your custom theme data attributes
   div[data-theme-boxed],
+  div[data-theme-boxed-5],
+  div[data-theme-boxed-10],
+  div[data-theme-boxed-15],
+  div[data-theme-boxed-20],
+  div[data-theme-boxed-25],
+  div[data-theme-boxed-30],
+  div[data-theme-boxed-33],
+  div[data-theme-boxed-35],
+  div[data-theme-boxed-40],
+  div[data-theme-boxed-45],
   div[data-theme-boxed-50],
+  div[data-theme-boxed-55],
+  div[data-theme-boxed-60],
+  div[data-theme-boxed-65],
+  div[data-theme-boxed-66],
+  div[data-theme-boxed-70],
+  div[data-theme-boxed-75],
+  div[data-theme-boxed-80],
+  div[data-theme-boxed-85],
+  div[data-theme-boxed-90],
+  div[data-theme-boxed-95] {
+    margin: 0.5em 0;
+    // Inherit the styles from your main theme
+  }
+  
   div[data-theme-scrollable] {
     margin: 0.5em 0;
+    max-height: 300px;
+    overflow: auto;
   }
   
   iframe {
     max-width: 100%;
+    margin: 0.5em 0;
   }
   
   table {
     border-collapse: collapse;
     width: 100%;
     margin: 0.5em 0;
+    font-size: 0.9em;
     
     th, td {
       border: 1px solid var(--primary-low);
       padding: 0.5em;
+      text-align: left;
     }
     
     th {
       background: var(--primary-very-low);
       font-weight: bold;
     }
+  }
+  
+  // Code blocks with syntax highlighting
+  .hljs {
+    background: var(--primary-very-low);
+  }
+  
+  // Lightbox images
+  .lightbox-wrapper {
+    margin: 0.5em 0;
+  }
+  
+  // Onebox embeds
+  .onebox {
+    margin: 0.5em 0;
+    max-width: 100%;
   }
 }
 
@@ -169,21 +191,6 @@ body.dark-mode {
       &:hover {
         color: var(--tertiary-high);
       }
-    }
-  }
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .inline-divtip {
-    .divtip-content {
-      left: 0;
-      right: 0;
-      transform: none;
-      min-width: auto;
-      max-width: 90vw;
-      margin-left: 5vw;
-      margin-right: 5vw;
     }
   }
 }
