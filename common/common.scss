@@ -1,9 +1,11 @@
 /* Discourse Inline Tooltips - Float Kit DTooltip Version */
 
+/* Wrapper is inline so tooltip trigger stays on same line */
 .inline-divtip-wrapper {
   display: inline;
 }
 
+/* Tooltip trigger styling */
 .expand-divtip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -26,9 +28,10 @@
     display: block;
     overflow: auto;
     max-height: 600px;
-    padding: 4px;
+    padding: 8px;
   }
 
+  /* Images */
   img {
     height: auto;
     max-width: 100%;
@@ -36,6 +39,7 @@
     margin: 0.5em 0;
   }
 
+  /* Paragraphs */
   p {
     margin: 0 0 0.75em 0;
     display: block;
@@ -49,6 +53,7 @@
     }
   }
   
+  /* Headings */
   h1, h2, h3, h4, h5, h6 {
     display: block;
     margin: 1em 0 0.5em 0;
@@ -59,7 +64,7 @@
       margin-top: 0;
     }
     
-    // Hide anchor links in tooltips
+    /* Hide anchor links in tooltips */
     a.anchor {
       display: none !important;
     }
@@ -72,6 +77,7 @@
   h5 { font-size: 1.1em; }
   h6 { font-size: 1em; }
   
+  /* Horizontal rules */
   hr {
     display: block;
     margin: 1em 0;
@@ -80,6 +86,7 @@
     height: 0;
   }
   
+  /* Text formatting */
   strong, b {
     font-weight: bold;
   }
@@ -88,6 +95,7 @@
     font-style: italic;
   }
 
+  /* Inline code */
   code {
     background: var(--primary-very-low);
     padding: 0.2em 0.4em;
@@ -97,6 +105,7 @@
     white-space: pre-wrap;
   }
   
+  /* Code blocks */
   pre {
     display: block;
     background: var(--primary-very-low);
@@ -111,6 +120,7 @@
     }
   }
   
+  /* Lists */
   ul, ol {
     display: block;
     margin: 0.5em 0;
@@ -132,6 +142,7 @@
     margin: 0.25em 0;
   }
   
+  /* Blockquotes */
   blockquote {
     display: block;
     border-left: 4px solid var(--primary-low);
@@ -140,7 +151,7 @@
     color: var(--primary-medium);
   }
   
-  // Support for your custom theme data attributes
+  /* Support for your custom [data-theme-boxed] attributes */
   div[data-theme-boxed],
   div[data-theme-boxed-5],
   div[data-theme-boxed-10],
@@ -165,8 +176,10 @@
   div[data-theme-boxed-95] {
     display: block;
     margin: 0.5em 0;
+    /* Your main theme styles for these will apply */
   }
   
+  /* Scrollable content */
   div[data-theme-scrollable] {
     display: block;
     margin: 0.5em 0;
@@ -178,6 +191,7 @@
     }
   }
   
+  /* iFrames */
   iframe {
     display: block;
     max-width: 100%;
@@ -185,6 +199,7 @@
     border: 0;
   }
   
+  /* Tables */
   table {
     display: table;
     border-collapse: collapse;
@@ -192,9 +207,17 @@
     margin: 0.5em 0;
     font-size: 0.9em;
     
-    thead { display: table-header-group; }
-    tbody { display: table-row-group; }
-    tr { display: table-row; }
+    thead { 
+      display: table-header-group; 
+    }
+    
+    tbody { 
+      display: table-row-group; 
+    }
+    
+    tr { 
+      display: table-row; 
+    }
     
     th, td {
       display: table-cell;
@@ -209,11 +232,13 @@
     }
   }
   
+  /* Syntax highlighting */
   .hljs {
     background: var(--primary-very-low);
     display: block;
   }
   
+  /* Code block buttons */
   .codeblock-buttons {
     position: relative;
     
@@ -222,8 +247,18 @@
       right: 0;
       top: 0;
     }
+    
+    .btn {
+      background: var(--primary-low);
+      border: 1px solid var(--primary-medium);
+      
+      &:hover {
+        background: var(--primary-medium);
+      }
+    }
   }
   
+  /* Lightbox images */
   .lightbox-wrapper {
     display: block;
     margin: 0.5em 0;
@@ -239,20 +274,40 @@
       font-size: 0.85em;
       color: var(--primary-medium);
       margin-top: 0.25em;
+      
+      .filename {
+        font-weight: 500;
+      }
+      
+      .informations {
+        color: var(--primary-high);
+      }
     }
   }
   
-  .onebox, .video-onebox {
+  /* Onebox embeds */
+  .onebox {
     display: block;
     margin: 0.5em 0;
     max-width: 100%;
+    border: 1px solid var(--primary-low);
+    padding: 0.5em;
+    border-radius: 4px;
+  }
+  
+  /* Video embeds */
+  .video-onebox {
+    display: block;
+    margin: 0.5em 0;
     
     video {
       max-width: 100%;
       height: auto;
+      display: block;
     }
   }
   
+  /* Links */
   a {
     color: var(--tertiary);
     text-decoration: underline;
@@ -260,12 +315,25 @@
     &:hover {
       color: var(--tertiary-high);
     }
+    
+    &:visited {
+      color: var(--tertiary);
+    }
   }
   
+  /* Emoji */
   .emoji {
     width: 20px;
     height: 20px;
     vertical-align: middle;
+  }
+  
+  /* Discourse mentions */
+  .mention {
+    background: var(--primary-very-low);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    color: var(--primary-high);
   }
 }
 
@@ -277,5 +345,12 @@ body.dark-mode {
     &:hover {
       color: var(--tertiary-high);
     }
+  }
+}
+
+/* Mobile responsive - adjust tooltip max-width on small screens */
+@media (max-width: 768px) {
+  .fk-d-tooltip__content[data-identifier="inline-divtip"] {
+    max-width: 90vw;
   }
 }
