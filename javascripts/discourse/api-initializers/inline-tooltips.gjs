@@ -69,20 +69,24 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create wrapper span
+        // Create wrapper span that will contain the rendered component
         const wrapper = document.createElement('span');
         wrapper.className = 'inline-divtip-wrapper';
         
-        // Use helper.renderGlimmer to render the component
-        const componentElement = helper.renderGlimmer(wrapper, InlineDivtip, {
+        // Insert wrapper into DOM before rendering
+        if (div.parentNode) {
+          div.parentNode.insertBefore(wrapper, div);
+        }
+        
+        // Now render the component into the wrapper
+        // helper.renderGlimmer modifies the wrapper in place and doesn't return anything
+        helper.renderGlimmer(wrapper, InlineDivtip, {
           triggerText: triggerText,
           divtipContent: divtipContent
         });
         
-        // Replace the div with our component
-        if (div.parentNode) {
-          div.parentNode.replaceChild(componentElement, div);
-        }
+        // Remove the original div after rendering
+        div.remove();
         
         div.classList.add('inline-divtip-processed');
       });
