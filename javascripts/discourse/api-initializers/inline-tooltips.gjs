@@ -140,7 +140,7 @@ function processTips(element, helper) {
     }
 
     // Get the content (innerHTML of the div)
-    const divtipContent = div.innerHTML;
+    const divtipContent = div.innerHTML.trim();
     
     if (!divtipContent) {
       return;
