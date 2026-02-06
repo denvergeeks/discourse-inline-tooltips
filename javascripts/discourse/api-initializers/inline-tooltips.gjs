@@ -5,7 +5,7 @@ import { htmlSafe } from "@ember/template";
 import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
 
-class InlineDivtip extends Component {
+class InlineTip extends Component {
   @action
   preventDefault(event) {
     event.preventDefault();
@@ -13,24 +13,23 @@ class InlineDivtip extends Component {
 
   <template>
     <DTooltip
-      @identifier="inline-divtip"
+      @identifier="inline-tip"
       @interactive={{true}}
       @inline={{true}}
-      {{! ☝️ THIS IS THE KEY - @inline={{true}} makes it display inline }}
       @closeOnScroll={{false}}
       @closeOnClickOutside={{true}}
       @maxWidth={{600}}
     >
       <:trigger>
         <a
-          class="expand-divtip"
+          class="expand-tip"
           href
           role="button"
           {{on "click" this.preventDefault}}
         >{{htmlSafe @data.triggerText}}</a>
       </:trigger>
       <:content>
-        {{htmlSafe @data.divtipContent}}
+        {{htmlSafe @data.tipContent}}
       </:content>
     </DTooltip>
   </template>
@@ -41,12 +40,12 @@ export default apiInitializer("1.14.0", (api) => {
   api.decorateCookedElement(
     (element, helper) => {
       // Skip if already processed
-      if (!element || element.classList.contains("inline-divtips-processed")) {
+      if (!element || element.classList.contains("inline-tips-processed")) {
         return;
       }
 
       // Find all DIVs with data-divtip attribute
-      const tipDivs = element.querySelectorAll('div[data-divtip]');
+      const tipDivs = element.querySelectorAll('div[data-tip]');
       
       if (tipDivs.length === 0) {
         return;
@@ -54,26 +53,26 @@ export default apiInitializer("1.14.0", (api) => {
 
       tipDivs.forEach((div) => {
         // Skip if already processed
-        if (div.classList.contains('inline-divtip-processed')) {
+        if (div.classList.contains('inline-tip-processed')) {
           return;
         }
         
-        const triggerText = div.getAttribute('data-divtip');
+        const triggerText = div.getAttribute('data-tip');
         
         if (!triggerText) {
           return;
         }
 
         // Get the content (innerHTML of the div)
-        const divtipContent = div.innerHTML.trim();
+        const tipContent = div.innerHTML.trim();
         
-        if (!divtipContent) {
+        if (!tipContent) {
           return;
         }
 
         // Create wrapper span for inline display
         const wrapper = document.createElement('span');
-        wrapper.className = 'inline-divtip-wrapper';
+        wrapper.className = 'inline-tip-wrapper';
         
         // Insert wrapper into DOM before rendering
         if (div.parentNode) {
@@ -81,34 +80,34 @@ export default apiInitializer("1.14.0", (api) => {
         }
         
         // Now render the component into the wrapper using inline template
-        helper.renderGlimmer(wrapper, InlineDivtip, {
+        helper.renderGlimmer(wrapper, InlineTip, {
           triggerText: triggerText,
-          divtipContent: divtipContent
+          tipContent: tipContent
         });
         
         // Remove the original div after rendering
         div.remove();
         
-        div.classList.add('inline-divtip-processed');
+        div.classList.add('inline-tip-processed');
       });
       
-      element.classList.add("inline-divtips-processed");
+      element.classList.add("inline-tips-processed");
     },
     { 
-      id: "inline-divtips"
+      id: "inline-tips"
     }
   );
 
   // Add composer toolbar button
   api.addComposerToolbarPopupMenuOption({
-    id: "insert-divtip",
-    icon: "circle-info",
+    id: "insert-tooltip",
+    icon: "tooltip-icon",
     label: "insert_tooltip_label",
     action(toolbarEvent) {
       const selected = toolbarEvent.selected;
       const triggerText = selected.value || "trigger text";
       
-      const insertion = `<div data-divtip="${triggerText}">
+      const insertion = `<div data-tip="${triggerText}">
 
 Tooltip content with **markdown** and <strong>HTML</strong>
 
