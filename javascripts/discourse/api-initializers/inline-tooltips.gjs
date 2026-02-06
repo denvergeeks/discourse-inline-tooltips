@@ -4,6 +4,7 @@ import { action } from "@ember/object";
 import { htmlSafe } from "@ember/template";
 import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
+import I18n from "I18n";
 
 class InlineTip extends Component {
   @action
