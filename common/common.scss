@@ -1,5 +1,11 @@
-/* Discourse Inline Tooltips Theme Component https://github.com/denvergeeks/discourse-inline-tooltips/common/common.scss */
+/* Discourse Inline Tooltips 0BRANCH Theme Component https://github.com/denvergeeks/discourse-inline-tooltips/common/common.scss */
 
+/* Wrapper created by the script */
+.inline-tip-wrapper {
+  display: inline;
+}
+
+/* Component styling */
 .inline-tip {
   display: inline;
   
@@ -16,18 +22,11 @@
   }
 }
 
-/*
-.inline-tips-processed p {
-  display: inline;
-}
-*/
-
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   
   .fk-d-tooltip__inner-content {
-    /* flex-direction: column; */
     display: block;
     overflow: auto;
     max-height: 600px;
@@ -69,14 +68,3 @@
   }
 }
 
-body.dark-mode {
-  .inline-tip {
-    a.expand-tip {
-      color: var(--tertiary);
-      
-      &:hover {
-        color: var(--tertiary-high);
-      }
-    }
-  }
-}
