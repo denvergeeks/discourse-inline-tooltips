@@ -22,13 +22,6 @@
 }
 */
 
-[data-identifier="inline-divtip"] {
-  .fk-d-tooltip__inner-content {
-    display: block;
-  }
-}
-
-/*
 .fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
@@ -86,4 +79,4 @@ body.dark-mode {
     }
   }
 }
-*/
+
