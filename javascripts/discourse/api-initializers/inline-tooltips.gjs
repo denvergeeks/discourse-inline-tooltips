@@ -156,7 +156,7 @@ function processTips(element, helper) {
     });
 
     // Replace the div with our tooltip
-    div.parentNode.replaceChild(divtipComponent, span);
+    div.parentNode.replaceChild(divtipComponent, div);
   });
   
   element.classList.add("inline-divtips-processed");
