@@ -35,8 +35,8 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create inline wrapper
-        const wrapper = document.createElement('span');
+        // Create wrapper div (needs to be positioned)
+        const wrapper = document.createElement('div');
         wrapper.className = 'inline-divtip';
         
         // Create trigger link
@@ -46,44 +46,22 @@ export default apiInitializer("1.14.0", (api) => {
         trigger.role = 'button';
         trigger.textContent = triggerText;
         
-        // Store the HTML content in a data attribute (we'll parse it on show)
-        trigger.setAttribute('data-divtip-html', divtipContent);
-        
         trigger.addEventListener('click', (e) => {
           e.preventDefault();
         });
         
-        wrapper.appendChild(trigger);
+        // Create tooltip content container
+        const tooltipBox = document.createElement('div');
+        tooltipBox.className = 'divtip-content';
+        tooltipBox.innerHTML = divtipContent;
         
-        // Replace the div with our inline tooltip
+        // Assemble
+        wrapper.appendChild(trigger);
+        wrapper.appendChild(tooltipBox);
+        
+        // Replace the div with our wrapper
         if (div.parentNode) {
           div.parentNode.replaceChild(wrapper, div);
-        }
-        
-        // Use Tippy.js directly (what Discourse uses for tooltips)
-        if (window.tippy) {
-          const tippyInstance = window.tippy(trigger, {
-            content: divtipContent,
-            allowHTML: true,
-            interactive: true,
-            trigger: 'mouseenter click',
-            hideOnClick: false,
-            placement: 'top',
-            maxWidth: 600,
-            theme: 'light-border',
-            arrow: true,
-            appendTo: document.body,
-            onShow(instance) {
-              // Create a proper DOM structure for the content
-              const contentDiv = document.createElement('div');
-              contentDiv.className = 'inline-divtip-content';
-              contentDiv.innerHTML = trigger.getAttribute('data-divtip-html');
-              instance.setContent(contentDiv);
-            }
-          });
-          
-          // Store instance for cleanup
-          trigger._tippyInstance = tippyInstance;
         }
         
         div.classList.add('inline-divtip-processed');
@@ -95,16 +73,6 @@ export default apiInitializer("1.14.0", (api) => {
       id: "inline-divtips"
     }
   );
-
-  // Cleanup on page change
-  api.onPageChange(() => {
-    document.querySelectorAll('.expand-divtip').forEach(trigger => {
-      if (trigger._tippyInstance) {
-        trigger._tippyInstance.destroy();
-        delete trigger._tippyInstance;
-      }
-    });
-  });
 
   // Add composer toolbar button
   api.addComposerToolbarPopupMenuOption({
