@@ -37,6 +37,16 @@ class InlineTip extends Component {
 }
 
 export default apiInitializer("1.14.0", (api) => {
+  // Register translation for button label
+  const locale = I18n.locale || I18n.currentLocale || "en";
+  if (!I18n.translations[locale]) {
+    I18n.translations[locale] = {};
+  }
+  if (!I18n.translations[locale].js) {
+    I18n.translations[locale].js = {};
+  }
+  I18n.translations[locale].js.insert_tooltip_label = "Insert Tooltip";
+
   // Decorate cooked content
   api.decorateCookedElement(
     (element, helper) => {
