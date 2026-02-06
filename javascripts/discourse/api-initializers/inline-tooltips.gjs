@@ -5,7 +5,7 @@ import { htmlSafe } from "@ember/template";
 import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
 
-class InlineDivtip extends Component {
+class InlineTip extends Component {
   @action
   preventDefault(event) {
     event.preventDefault();
@@ -13,24 +13,23 @@ class InlineDivtip extends Component {
 
   <template>
     <DTooltip
-      @identifier="inline-divtip"
+      @identifier="inline-tip"
       @interactive={{true}}
       @inline={{true}}
-      {{! ☝️ THIS IS THE KEY - @inline={{true}} makes it display inline }}
       @closeOnScroll={{false}}
       @closeOnClickOutside={{true}}
       @maxWidth={{600}}
     >
       <:trigger>
         <a
-          class="expand-divtip"
+          class="expand-tip"
           href
           role="button"
           {{on "click" this.preventDefault}}
         >{{htmlSafe @data.triggerText}}</a>
       </:trigger>
       <:content>
-        {{htmlSafe @data.divtipContent}}
+        {{htmlSafe @data.tipContent}}
       </:content>
     </DTooltip>
   </template>
@@ -41,33 +40,33 @@ export default apiInitializer("1.14.0", (api) => {
   api.decorateCookedElement(
     (element, helper) => {
       // Skip if already processed
-      if (!element || element.classList.contains("inline-divtips-processed")) {
+      if (!element || element.classList.contains("inline-tips-processed")) {
         return;
       }
 
-      // Find all DIVs with data-divtip attribute
-      const tipDivs = element.querySelectorAll('div[data-divtip]');
+      // Find all DIVs with data-tip attribute
+      const tipSpans = element.querySelectorAll('span[data-tip]');
       
-      if (tipDivs.length === 0) {
+      if (tipSpans.length === 0) {
         return;
       }
 
-      tipDivs.forEach((div) => {
+      tipSpans.forEach((div) => {
         // Skip if already processed
-        if (div.classList.contains('inline-divtip-processed')) {
+        if (div.classList.contains('inline-tip-processed')) {
           return;
         }
         
-        const triggerText = div.getAttribute('data-divtip');
+        const triggerText = span.getAttribute('data-tip');
         
         if (!triggerText) {
           return;
         }
 
-        // Get the content (innerHTML of the div)
-        const divtipContent = div.innerHTML.trim();
+        // Get the content (innerHTML of the span)
+        const tipContent = div.innerHTML.trim();
         
-        if (!divtipContent) {
+        if (!tipContent) {
           return;
         }
 
@@ -76,43 +75,43 @@ export default apiInitializer("1.14.0", (api) => {
         wrapper.className = 'inline-divtip-wrapper';
         
         // Insert wrapper into DOM before rendering
-        if (div.parentNode) {
-          div.parentNode.insertBefore(wrapper, div);
+        if (span.parentNode) {
+          span.parentNode.insertBefore(wrapper, span);
         }
         
         // Now render the component into the wrapper using inline template
-        helper.renderGlimmer(wrapper, InlineDivtip, {
+        helper.renderGlimmer(wrapper, InlineTip, {
           triggerText: triggerText,
-          divtipContent: divtipContent
+          tipContent: tipContent
         });
         
-        // Remove the original div after rendering
-        div.remove();
+        // Remove the original span after rendering
+        span.remove();
         
-        div.classList.add('inline-divtip-processed');
+        span.classList.add('inline-tip-processed');
       });
       
-      element.classList.add("inline-divtips-processed");
+      element.classList.add("inline-tips-processed");
     },
     { 
-      id: "inline-divtips"
+      id: "inline-tips"
     }
   );
 
   // Add composer toolbar button
   api.addComposerToolbarPopupMenuOption({
-    id: "insert-divtip",
-    icon: "circle-info",
+    id: "insert-tip",
+    icon: "tooltip-icon",
     label: "insert_tooltip_label",
     action(toolbarEvent) {
       const selected = toolbarEvent.selected;
       const triggerText = selected.value || "trigger text";
       
-      const insertion = `<div data-divtip="${triggerText}">
+      const insertion = `<span data-tip="${triggerText}">
 
 Tooltip content with **markdown** and <strong>HTML</strong>
 
-</div>`;
+</span>`;
 
       toolbarEvent.addText(insertion);
     }
