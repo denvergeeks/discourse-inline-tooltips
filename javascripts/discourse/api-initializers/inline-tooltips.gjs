@@ -53,7 +53,7 @@ export default apiInitializer("1.14.0", (api) => {
 
       tipSpans.forEach((span) => {
         // Skip if already processed
-        if (span.classList.contains('inline-tip')) {
+        if (span.classList.contains('inline-tip-processed')) {
           return;
         }
         
