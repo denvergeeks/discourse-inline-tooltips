@@ -147,7 +147,7 @@ function processTips(element, helper) {
     }
 
     // Create tooltip component
-    const divtipComponent = document.createElement('div');
+    const divtipComponent = document.createElement('span');
     divtipComponent.className = 'inline-divtip';
     
     helper.renderGlimmer(divtipComponent, InlineDivtip, {
@@ -156,7 +156,7 @@ function processTips(element, helper) {
     });
 
     // Replace the div with our tooltip
-    div.parentNode.replaceChild(divtipComponent, div);
+    div.parentNode.replaceChild(divtipComponent, span);
   });
   
   element.classList.add("inline-divtips-processed");
