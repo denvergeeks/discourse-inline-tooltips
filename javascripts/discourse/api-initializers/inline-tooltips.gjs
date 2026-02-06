@@ -4,7 +4,6 @@ import { action } from "@ember/object";
 import { htmlSafe } from "@ember/template";
 import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
-import { renderInElement } from "discourse/lib/render-glimmer";
 
 class InlineTip extends Component {
   @action
@@ -37,7 +36,7 @@ class InlineTip extends Component {
 }
 
 export default apiInitializer("1.14.0", (api) => {
-  // Decorate cooked content
+  // Decorate cooked content - MODERN WIDGET-FREE APPROACH
   api.decorateCookedElement(
     (element) => {
       // Skip if already processed
@@ -52,9 +51,12 @@ export default apiInitializer("1.14.0", (api) => {
         return;
       }
 
+      // Process each tooltip span
+      const componentsToRender = [];
+      
       tipSpans.forEach((span) => {
         // Skip if already processed
-        if (span.classList.contains('inline-tip-wrapper')) {
+        if (span.classList.contains('inline-tip-processed')) {
           return;
         }
         
@@ -73,25 +75,52 @@ export default apiInitializer("1.14.0", (api) => {
 
         // Create wrapper for tooltip
         const wrapper = document.createElement('span');
-        wrapper.className = 'inline-tip-wrapper';
+        wrapper.className = 'inline-tip-container';
         
-        // Use renderInElement for widget-free rendering
-        renderInElement(wrapper, InlineTip, {
-          triggerText: triggerText,
-          tipContent: tipContent
+        // Store data for rendering
+        componentsToRender.push({
+          wrapper,
+          data: {
+            triggerText: triggerText,
+            tipContent: tipContent
+          }
         });
 
-        // Replace the span with our tooltip
+        // Replace the span with our wrapper
         if (span.parentNode) {
           span.parentNode.replaceChild(wrapper, span);
         }
+        
+        span.classList.add('inline-tip-processed');
       });
+      
+      // Render all components using the container lookup method
+      if (componentsToRender.length > 0 && api.container) {
+        const glimmerHelper = api.container.lookup("service:glimmer-component-manager");
+        
+        if (glimmerHelper) {
+          componentsToRender.forEach(({ wrapper, data }) => {
+            try {
+              // Create a mounting point
+              const mountPoint = document.createElement('div');
+              mountPoint.style.display = 'inline';
+              wrapper.appendChild(mountPoint);
+              
+              // Mount the component
+              api.renderInOutlet
+                ? api.renderInOutlet(wrapper, InlineTip, { data })
+                : api._registerPluginOutletComponent?.(wrapper, InlineTip, { data });
+            } catch (e) {
+              console.error("Error rendering inline tooltip:", e);
+            }
+          });
+        }
+      }
       
       element.classList.add("inline-tips-processed");
     },
     { 
-      id: "inline-tips",
-      onlyStream: false
+      id: "inline-tips"
     }
   );
 
