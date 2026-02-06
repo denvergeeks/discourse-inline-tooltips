@@ -1,42 +1,8 @@
-import Component from "@glimmer/component";
-import { on } from "@ember/modifier";
-import { action } from "@ember/object";
-import { htmlSafe } from "@ember/template";
-import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
-
-class InlineTip extends Component {
-  @action
-  preventDefault(event) {
-    event.preventDefault();
-  }
-
-  <template>
-    <span class="inline-tip">
-      <DTooltip
-        @identifier="inline-tip"
-        @interactive={{true}}
-        @closeOnScroll={{false}}
-        @closeOnClickOutside={{true}}
-      >
-        <:trigger>
-          <a
-            class="expand-tip"
-            href
-            role="button"
-            {{on "click" this.preventDefault}}
-          >{{htmlSafe @data.triggerText}}</a>
-        </:trigger>
-        <:content>
-          {{htmlSafe @data.tipContent}}
-        </:content>
-      </DTooltip>
-    </span>
-  </template>
-}
+import { tooltip } from "discourse/lib/d-tooltip";
 
 export default apiInitializer("1.14.0", (api) => {
-  // Decorate cooked content - MODERN WIDGET-FREE APPROACH
+  // Decorate cooked content
   api.decorateCookedElement(
     (element) => {
       // Skip if already processed
@@ -51,12 +17,9 @@ export default apiInitializer("1.14.0", (api) => {
         return;
       }
 
-      // Process each tooltip span
-      const componentsToRender = [];
-      
       tipSpans.forEach((span) => {
         // Skip if already processed
-        if (span.classList.contains('inline-tip-processed')) {
+        if (span.classList.contains('inline-tip')) {
           return;
         }
         
@@ -73,49 +36,38 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create wrapper for tooltip
-        const wrapper = document.createElement('span');
-        wrapper.className = 'inline-tip-container';
+        // Create trigger link
+        const trigger = document.createElement('a');
+        trigger.href = '#';
+        trigger.className = 'expand-tip';
+        trigger.role = 'button';
+        trigger.innerHTML = triggerText;
+        trigger.dataset.tipContent = tipContent;
         
-        // Store data for rendering
-        componentsToRender.push({
-          wrapper,
-          data: {
-            triggerText: triggerText,
-            tipContent: tipContent
-          }
+        // Prevent default click behavior
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+        });
+        
+        // Create wrapper
+        const wrapper = document.createElement('span');
+        wrapper.className = 'inline-tip';
+        wrapper.appendChild(trigger);
+        
+        // Apply tooltip using Discourse's tooltip helper
+        tooltip(trigger, {
+          identifier: 'inline-tip',
+          interactive: true,
+          closeOnScroll: false,
+          closeOnClickOutside: true,
+          content: tipContent
         });
 
-        // Replace the span with our wrapper
+        // Replace the span
         if (span.parentNode) {
           span.parentNode.replaceChild(wrapper, span);
         }
-        
-        span.classList.add('inline-tip-processed');
       });
-      
-      // Render all components using the container lookup method
-      if (componentsToRender.length > 0 && api.container) {
-        const glimmerHelper = api.container.lookup("service:glimmer-component-manager");
-        
-        if (glimmerHelper) {
-          componentsToRender.forEach(({ wrapper, data }) => {
-            try {
-              // Create a mounting point
-              const mountPoint = document.createElement('div');
-              mountPoint.style.display = 'inline';
-              wrapper.appendChild(mountPoint);
-              
-              // Mount the component
-              api.renderInOutlet
-                ? api.renderInOutlet(wrapper, InlineTip, { data })
-                : api._registerPluginOutletComponent?.(wrapper, InlineTip, { data });
-            } catch (e) {
-              console.error("Error rendering inline tooltip:", e);
-            }
-          });
-        }
-      }
       
       element.classList.add("inline-tips-processed");
     },
