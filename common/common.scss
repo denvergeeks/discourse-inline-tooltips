@@ -22,12 +22,18 @@
 }
 */
 
+[data-identifier="inline-divtip"] {
+  .fk-d-tooltip__inner-content {
+    display: block;
+  }
+}
+
+/*
 .fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   
   .fk-d-tooltip__inner-content {
-    /* flex-direction: column; */
     display: block;
     overflow: auto;
     max-height: 600px;
@@ -80,3 +86,4 @@ body.dark-mode {
     }
   }
 }
+*/
