@@ -75,8 +75,8 @@ export default apiInitializer("1.14.0", (api) => {
         wrapper.className = 'inline-tip-wrapper';
         
         // Insert wrapper into DOM before rendering
-        if (div.parentNode) {
-          div.parentNode.insertBefore(wrapper, div);
+        if (span.parentNode) {
+          span.parentNode.insertBefore(wrapper, span);
         }
         
         // Now render the component into the wrapper using inline template
