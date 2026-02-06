@@ -16,6 +16,10 @@
   }
 }
 
+.inline-divtips-processed p {
+  display: inline;
+}
+
 .fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
