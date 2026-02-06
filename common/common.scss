@@ -152,34 +152,6 @@
     color: var(--primary-medium);
   }
   
-  /* Support for your custom [data-theme-boxed] attributes */
-  div[data-theme-boxed],
-  div[data-theme-boxed-5],
-  div[data-theme-boxed-10],
-  div[data-theme-boxed-15],
-  div[data-theme-boxed-20],
-  div[data-theme-boxed-25],
-  div[data-theme-boxed-30],
-  div[data-theme-boxed-33],
-  div[data-theme-boxed-35],
-  div[data-theme-boxed-40],
-  div[data-theme-boxed-45],
-  div[data-theme-boxed-50],
-  div[data-theme-boxed-55],
-  div[data-theme-boxed-60],
-  div[data-theme-boxed-65],
-  div[data-theme-boxed-66],
-  div[data-theme-boxed-70],
-  div[data-theme-boxed-75],
-  div[data-theme-boxed-80],
-  div[data-theme-boxed-85],
-  div[data-theme-boxed-90],
-  div[data-theme-boxed-95] {
-    display: block;
-    margin: 0.5em 0;
-    /* Your main theme styles for these will apply */
-  }
-  
   /* Scrollable content */
   div[data-theme-scrollable] {
     display: block;
