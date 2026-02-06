@@ -1,8 +1,8 @@
 import { apiInitializer } from "discourse/lib/api";
-import { tooltip } from "discourse/lib/d-tooltip";
+import { schedule } from "@ember/runloop";
 
 export default apiInitializer("1.14.0", (api) => {
-  // Decorate cooked content
+  // Decorate cooked content - Pure DOM approach, no widgets
   api.decorateCookedElement(
     (element) => {
       // Skip if already processed
@@ -42,7 +42,10 @@ export default apiInitializer("1.14.0", (api) => {
         trigger.className = 'expand-tip';
         trigger.role = 'button';
         trigger.innerHTML = triggerText;
-        trigger.dataset.tipContent = tipContent;
+        
+        // Store content in data attribute
+        trigger.setAttribute('data-content', tipContent);
+        trigger.setAttribute('data-tooltip', tipContent);
         
         // Prevent default click behavior
         trigger.addEventListener('click', (e) => {
@@ -54,13 +57,21 @@ export default apiInitializer("1.14.0", (api) => {
         wrapper.className = 'inline-tip';
         wrapper.appendChild(trigger);
         
-        // Apply tooltip using Discourse's tooltip helper
-        tooltip(trigger, {
-          identifier: 'inline-tip',
-          interactive: true,
-          closeOnScroll: false,
-          closeOnClickOutside: true,
-          content: tipContent
+        // Use Discourse's FloatKit tooltip
+        schedule('afterRender', () => {
+          if (window.FloatKit) {
+            window.FloatKit.tooltip(trigger, {
+              identifier: 'inline-tip',
+              interactive: true,
+              closeOnScroll: false,
+              closeOnClickOutside: true,
+              content: tipContent,
+              triggers: ['click', 'hover']
+            });
+          } else {
+            // Fallback: add title attribute
+            trigger.setAttribute('title', tipContent);
+          }
         });
 
         // Replace the span
