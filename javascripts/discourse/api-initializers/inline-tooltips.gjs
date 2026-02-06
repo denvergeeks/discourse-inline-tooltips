@@ -147,7 +147,7 @@ function processTips(element, helper) {
     }
 
     // Create tooltip component
-    const divtipComponent = document.createElement('span');
+    const divtipComponent = document.createElement('div');
     divtipComponent.className = 'inline-divtip';
     
     helper.renderGlimmer(divtipComponent, InlineDivtip, {
