@@ -26,14 +26,15 @@
   /* max-width: 600px; */
   
   .fk-d-tooltip__inner-content {
-    /* display: block; */
+    display: block;
     overflow: auto;
     max-height: 600px;
-    display: flex;
+    /* display: flex; */
+    /* flex-direction: column; */
     overflow-wrap: break-word;
     padding: .5rem;
     align-items: center;
-    flex-direction: column;
+    text-align: center;
   }
 
   /* Images */
