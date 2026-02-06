@@ -1,83 +1,33 @@
-/* Discourse Inline Tooltips - Pure CSS Solution */
+/* Discourse Inline Tooltips - Float Kit DTooltip Version */
 
-.inline-divtip {
-  position: relative;
-  display: inline-block;
+.inline-divtip-wrapper {
+  display: inline;
+}
+
+.expand-divtip {
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  color: var(--tertiary);
+  cursor: help;
   
-  a.expand-divtip {
-    text-decoration: underline;
-    text-decoration-style: dotted;
-    color: var(--tertiary);
-    cursor: help;
-    display: inline;
-    
-    &:hover {
-      color: var(--tertiary-high);
-      text-decoration-style: solid;
-    }
-  }
-  
-  /* Tooltip content - hidden by default */
-  .divtip-content {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    
-    background: var(--secondary);
-    border: 1px solid var(--primary-low);
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    padding: 16px;
-    
-    min-width: 300px;
-    max-width: 600px;
-    max-height: 600px;
-    overflow: auto;
-    
-    z-index: 1000;
-    pointer-events: none;
-    
-    /* Smooth fade in/out */
-    transition: visibility 0s linear 0.3s, opacity 0.3s linear;
-    
-    /* Arrow pointing down to trigger */
-    &::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 8px solid transparent;
-      border-top-color: var(--secondary);
-    }
-  }
-  
-  /* Show tooltip on hover */
-  &:hover .divtip-content {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-    transition-delay: 0.1s;
-  }
-  
-  /* Keep tooltip visible when hovering over it */
-  .divtip-content:hover {
-    visibility: visible;
-    opacity: 1;
+  &:hover {
+    color: var(--tertiary-high);
+    text-decoration-style: solid;
   }
 }
 
-/* Tooltip content styling */
-.divtip-content {
-  color: var(--primary);
-  font-size: var(--font-down-1);
-  line-height: 1.5;
-  text-align: left;
+/* Float Kit tooltip content styling */
+.fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
-  word-wrap: break-word;
+  font-size: var(--font-down-1);
+  max-width: 600px;
+  
+  .fk-d-tooltip__inner-content {
+    display: block;
+    overflow: auto;
+    max-height: 600px;
+    padding: 4px;
+  }
 
   img {
     height: auto;
@@ -319,30 +269,13 @@
   }
 }
 
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .inline-divtip {
-    .divtip-content {
-      left: 0;
-      right: 0;
-      transform: none;
-      min-width: auto;
-      max-width: 90vw;
-      margin-left: 5vw;
-      margin-right: 5vw;
-    }
-  }
-}
-
 /* Dark mode adjustments */
 body.dark-mode {
-  .inline-divtip {
-    a.expand-divtip {
-      color: var(--tertiary);
-      
-      &:hover {
-        color: var(--tertiary-high);
-      }
+  .expand-divtip {
+    color: var(--tertiary);
+    
+    &:hover {
+      color: var(--tertiary-high);
     }
   }
 }
