@@ -44,16 +44,16 @@ export default apiInitializer("1.14.0", (api) => {
         return;
       }
 
-      // Find all DIVs with data-tip attribute
+      // Find all SPANs with data-tip attribute
       const tipSpans = element.querySelectorAll('span[data-tip]');
       
       if (tipSpans.length === 0) {
         return;
       }
 
-      tipSpans.forEach((div) => {
+      tipSpans.forEach((span) => {
         // Skip if already processed
-        if (div.classList.contains('inline-tip-processed')) {
+        if (span.classList.contains('inline-tip-processed')) {
           return;
         }
         
@@ -64,7 +64,7 @@ export default apiInitializer("1.14.0", (api) => {
         }
 
         // Get the content (innerHTML of the span)
-        const tipContent = div.innerHTML.trim();
+        const tipContent = span.innerHTML.trim();
         
         if (!tipContent) {
           return;
@@ -72,7 +72,7 @@ export default apiInitializer("1.14.0", (api) => {
 
         // Create wrapper span for inline display
         const wrapper = document.createElement('span');
-        wrapper.className = 'inline-divtip-wrapper';
+        wrapper.className = 'inline-tip-wrapper';
         
         // Insert wrapper into DOM before rendering
         if (span.parentNode) {
