@@ -1,7 +1,11 @@
 import { apiInitializer } from "discourse/lib/api";
+import { bind } from "discourse-common/utils/decorators";
 
 export default apiInitializer("1.14.0", (api) => {
-  // Decorate cooked content - MODERN WIDGET-FREE APPROACH
+  // Store references to active tooltips
+  const tooltipInstances = new Map();
+
+  // Decorate cooked content
   api.decorateCookedElement(
     (element) => {
       // Skip if already processed
@@ -35,7 +39,7 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create inline wrapper for tooltip trigger
+        // Create inline wrapper
         const wrapper = document.createElement('span');
         wrapper.className = 'inline-divtip';
         
@@ -45,29 +49,45 @@ export default apiInitializer("1.14.0", (api) => {
         trigger.className = 'expand-divtip';
         trigger.role = 'button';
         trigger.innerHTML = triggerText;
+        trigger.setAttribute('data-tooltip', divtipContent);
         
-        // Store content in data attribute for tooltip
-        trigger.setAttribute('data-content', divtipContent);
+        // Use Float Kit's tooltip attribute
+        trigger.setAttribute('data-tooltip-interactive', 'true');
+        trigger.setAttribute('data-tooltip-max-width', '600');
+        trigger.setAttribute('data-identifier', 'inline-divtip');
         
         // Prevent default click behavior
         trigger.addEventListener('click', (e) => {
           e.preventDefault();
-          // Toggle tooltip visibility
-          wrapper.classList.toggle('divtip-open');
         });
         
-        // Create tooltip content element
-        const tooltip = document.createElement('div');
-        tooltip.className = 'divtip-content';
-        tooltip.innerHTML = divtipContent;
-        
-        // Assemble the structure
         wrapper.appendChild(trigger);
-        wrapper.appendChild(tooltip);
         
         // Replace the div with our inline tooltip
         if (div.parentNode) {
           div.parentNode.replaceChild(wrapper, div);
+        }
+        
+        // Initialize Float Kit tooltip programmatically
+        if (api.container) {
+          try {
+            const tooltipService = api.container.lookup('service:tooltip');
+            if (tooltipService && tooltipService.register) {
+              tooltipService.register(trigger, {
+                identifier: 'inline-divtip',
+                interactive: true,
+                closeOnScroll: false,
+                closeOnClickOutside: true,
+                maxWidth: 600,
+                content: divtipContent,
+                triggers: ['click', 'hover']
+              });
+              
+              tooltipInstances.set(trigger, tooltipService);
+            }
+          } catch (e) {
+            console.warn("Could not initialize tooltip service:", e);
+          }
         }
         
         div.classList.add('inline-divtip-processed');
@@ -97,5 +117,15 @@ Tooltip content with **markdown** and <strong>HTML</strong>
 
       toolbarEvent.addText(insertion);
     }
+  });
+  
+  // Cleanup on teardown
+  api.onPageChange(() => {
+    tooltipInstances.forEach((service, element) => {
+      if (service.unregister) {
+        service.unregister(element);
+      }
+    });
+    tooltipInstances.clear();
   });
 });
