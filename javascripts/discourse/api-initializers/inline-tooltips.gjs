@@ -69,7 +69,7 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Create wrapper span that will contain the rendered component
+        // Create wrapper span for inline display
         const wrapper = document.createElement('span');
         wrapper.className = 'inline-divtip-wrapper';
         
@@ -79,7 +79,6 @@ export default apiInitializer("1.14.0", (api) => {
         }
         
         // Now render the component into the wrapper
-        // helper.renderGlimmer modifies the wrapper in place and doesn't return anything
         helper.renderGlimmer(wrapper, InlineDivtip, {
           triggerText: triggerText,
           divtipContent: divtipContent
