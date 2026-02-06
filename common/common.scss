@@ -1,13 +1,10 @@
-/* Wrapper created by the script */
-.inline-tip-wrapper {
-  display: inline;
-}
+/* Discourse Inline Tooltips Theme Component - DIV Version */
 
-/* Component styling */
-.inline-tip {
+.inline-divtip {
+  position: relative;
   display: inline;
   
-  a.expand-tip {
+  a.expand-divtip {
     text-decoration: underline;
     text-decoration-style: dotted;
     color: var(--tertiary);
@@ -18,50 +15,175 @@
       text-decoration-style: solid;
     }
   }
+  
+  /* Tooltip content - hidden by default */
+  .divtip-content {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    padding: 16px;
+    background: var(--secondary);
+    border: 1px solid var(--primary-low);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 600px;
+    max-height: 600px;
+    overflow: auto;
+    font-size: var(--font-down-1);
+    
+    /* Arrow pointing down */
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: var(--secondary);
+    }
+  }
+  
+  /* Show tooltip when open */
+  &.divtip-open .divtip-content {
+    display: block;
+  }
 }
 
-.fk-d-tooltip__content[data-identifier="inline-tip"] {
+/* Tooltip content styling */
+.divtip-content {
   overflow-wrap: break-word;
-  font-size: var(--font-down-1);
+  word-wrap: break-word;
   
-  .fk-d-tooltip__inner-content {
-    display: block;
-    overflow: auto;
-    max-height: 600px;
-  }
-
   img {
     height: auto;
     max-width: 100%;
   }
 
   p {
-    margin: 0;
+    margin: 0 0 0.75em 0;
     min-width: 0;
     max-width: 100%;
-          
+    
     &:first-child {
       margin-top: 0;
     }
-      
+    
     &:last-child {
       margin-bottom: 0;
     }
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
     
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  
+  hr {
+    margin: 1em 0;
+    border: 0;
+    border-top: 1px solid var(--primary-low);
+  }
+  
   strong, b {
     font-weight: bold;
   }
-    
+  
   em, i {
     font-style: italic;
   }
 
   code {
     background: var(--primary-very-low);
-    padding: .2em .4em;
+    padding: 0.2em 0.4em;
     border-radius: 3px;
-    font-size: .9em;
-    white-space: break-spaces;
+    font-size: 0.9em;
+    white-space: pre-wrap;
+  }
+  
+  pre {
+    background: var(--primary-very-low);
+    padding: 1em;
+    border-radius: 4px;
+    overflow: auto;
+    
+    code {
+      background: none;
+      padding: 0;
+    }
+  }
+  
+  ul, ol {
+    margin: 0.5em 0;
+    padding-left: 2em;
+  }
+  
+  blockquote {
+    border-left: 4px solid var(--primary-low);
+    padding-left: 1em;
+    margin: 0.5em 0;
+    color: var(--primary-medium);
+  }
+  
+  div[data-theme-boxed],
+  div[data-theme-boxed-50],
+  div[data-theme-scrollable] {
+    margin: 0.5em 0;
+  }
+  
+  iframe {
+    max-width: 100%;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.5em 0;
+    
+    th, td {
+      border: 1px solid var(--primary-low);
+      padding: 0.5em;
+    }
+    
+    th {
+      background: var(--primary-very-low);
+      font-weight: bold;
+    }
+  }
+}
+
+/* Dark mode adjustments */
+body.dark-mode {
+  .inline-divtip {
+    a.expand-divtip {
+      color: var(--tertiary);
+      
+      &:hover {
+        color: var(--tertiary-high);
+      }
+    }
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .inline-divtip {
+    .divtip-content {
+      left: 0;
+      right: 0;
+      transform: none;
+      min-width: auto;
+      max-width: 90vw;
+      margin-left: 5vw;
+      margin-right: 5vw;
+    }
   }
 }
