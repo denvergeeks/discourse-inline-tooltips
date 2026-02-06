@@ -29,7 +29,11 @@
     /* display: block; */
     overflow: auto;
     max-height: 600px;
-    padding: 8px;
+    display: flex;
+    overflow-wrap: break-word;
+    padding: .5rem;
+    align-items: center;
+    flex-direction: column;
   }
 
   /* Images */
