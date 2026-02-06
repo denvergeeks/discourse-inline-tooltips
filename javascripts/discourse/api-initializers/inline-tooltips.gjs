@@ -19,7 +19,7 @@ class InlineTip extends Component {
       @inline={{true}}
       @closeOnScroll={{false}}
       @closeOnClickOutside={{true}}
-      @maxWidth={{600}}
+      @maxWidth={{350}}
     >
       <:trigger>
         <a
