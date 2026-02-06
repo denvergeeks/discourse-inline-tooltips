@@ -4,7 +4,7 @@ import { action } from "@ember/object";
 import { htmlSafe } from "@ember/template";
 import DTooltip from "float-kit/components/d-tooltip";
 import { apiInitializer } from "discourse/lib/api";
-import I18n from "discourse-i18n";
+import { renderInElement } from "discourse/lib/render-glimmer";
 
 class InlineTip extends Component {
   @action
@@ -13,36 +13,35 @@ class InlineTip extends Component {
   }
 
   <template>
-    <DTooltip
-      @identifier="inline-tip"
-      @interactive={{true}}
-      @closeOnScroll={{false}}
-      @closeOnClickOutside={{true}}
-    >
-      <:trigger>
-        <a
-          class="expand-tip"
-          href
-          role="button"
-          {{on "click" this.preventDefault}}
-        >{{htmlSafe @data.triggerText}}</a>
-      </:trigger>
-      <:content>
-        {{htmlSafe @data.tipContent}}
-      </:content>
-    </DTooltip>
+    <span class="inline-tip">
+      <DTooltip
+        @identifier="inline-tip"
+        @interactive={{true}}
+        @closeOnScroll={{false}}
+        @closeOnClickOutside={{true}}
+      >
+        <:trigger>
+          <a
+            class="expand-tip"
+            href
+            role="button"
+            {{on "click" this.preventDefault}}
+          >{{htmlSafe @data.triggerText}}</a>
+        </:trigger>
+        <:content>
+          {{htmlSafe @data.tipContent}}
+        </:content>
+      </DTooltip>
+    </span>
   </template>
 }
 
 export default apiInitializer("1.14.0", (api) => {
   // Decorate cooked content
   api.decorateCookedElement(
-    (element, helper) => {
+    (element) => {
+      // Skip if already processed
       if (!element || element.classList.contains("inline-tips-processed")) {
-        return;
-      }
-
-      if (!helper?.widget) {
         return;
       }
 
@@ -55,7 +54,7 @@ export default apiInitializer("1.14.0", (api) => {
 
       tipSpans.forEach((span) => {
         // Skip if already processed
-        if (span.classList.contains('inline-tip')) {
+        if (span.classList.contains('inline-tip-wrapper')) {
           return;
         }
         
@@ -74,21 +73,26 @@ export default apiInitializer("1.14.0", (api) => {
 
         // Create wrapper for tooltip
         const wrapper = document.createElement('span');
-        wrapper.className = 'inline-tip';
+        wrapper.className = 'inline-tip-wrapper';
         
-        // Use the new renderInto method instead of renderGlimmer
-        api.renderInto(wrapper, InlineTip, {
+        // Use renderInElement for widget-free rendering
+        renderInElement(wrapper, InlineTip, {
           triggerText: triggerText,
           tipContent: tipContent
         });
 
         // Replace the span with our tooltip
-        span.parentNode?.replaceChild(wrapper, span);
+        if (span.parentNode) {
+          span.parentNode.replaceChild(wrapper, span);
+        }
       });
       
       element.classList.add("inline-tips-processed");
     },
-    { id: "inline-tips", onlyStream: true }
+    { 
+      id: "inline-tips",
+      onlyStream: false
+    }
   );
 
   // Add composer toolbar button
