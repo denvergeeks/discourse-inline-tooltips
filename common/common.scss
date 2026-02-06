@@ -2,6 +2,7 @@
 
 .inline-divtip {
   display: inline;
+  position: relative;
   
   a.expand-divtip {
     text-decoration: underline;
@@ -14,29 +15,55 @@
       text-decoration-style: solid;
     }
   }
+  
+  // Make sure Float Kit trigger works
+  .fk-d-tooltip__trigger {
+    display: inline;
+  }
+  
+  .fk-d-tooltip__trigger-container {
+    display: inline;
+  }
+  
+  // Tooltip content visibility handled by Float Kit
+  .fk-d-tooltip__content {
+    // Float Kit will handle positioning and visibility
+    &[aria-expanded="true"] {
+      display: block !important;
+    }
+  }
 }
 
 /* Float Kit tooltip content styling for our tooltips */
 .fk-d-tooltip__content[data-identifier="inline-divtip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
+  max-width: 600px;
   
   .fk-d-tooltip__inner-content {
     display: block;
     overflow: auto;
     max-height: 600px;
-    padding: 4px;
+    padding: 12px;
+    
+    // Ensure HTML renders properly
+    * {
+      all: revert;
+    }
   }
 
   img {
     height: auto;
     max-width: 100%;
+    display: block;
+    margin: 0.5em 0;
   }
 
   p {
     margin: 0 0 0.75em 0;
     min-width: 0;
     max-width: 100%;
+    display: block;
     
     &:first-child {
       margin-top: 0;
@@ -48,17 +75,26 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
+    display: block;
     margin-top: 1em;
     margin-bottom: 0.5em;
-    font-size: 1.2em;
     font-weight: bold;
     
     &:first-child {
       margin-top: 0;
     }
+    
+    a.anchor {
+      display: none; // Hide anchor links in tooltips
+    }
+  }
+  
+  h3 {
+    font-size: 1.2em;
   }
   
   hr {
+    display: block;
     margin: 1em 0;
     border: 0;
     border-top: 1px solid var(--primary-low);
@@ -77,10 +113,12 @@
     padding: 0.2em 0.4em;
     border-radius: 3px;
     font-size: 0.9em;
+    font-family: var(--font-family-monospace, monospace);
     white-space: pre-wrap;
   }
   
   pre {
+    display: block;
     background: var(--primary-very-low);
     padding: 1em;
     border-radius: 4px;
@@ -94,15 +132,27 @@
   }
   
   ul, ol {
+    display: block;
     margin: 0.5em 0;
     padding-left: 2em;
+    list-style-position: outside;
+  }
+  
+  ul {
+    list-style-type: disc;
+  }
+  
+  ol {
+    list-style-type: decimal;
   }
   
   li {
+    display: list-item;
     margin: 0.25em 0;
   }
   
   blockquote {
+    display: block;
     border-left: 4px solid var(--primary-low);
     padding-left: 1em;
     margin: 0.5em 0;
@@ -132,28 +182,45 @@
   div[data-theme-boxed-85],
   div[data-theme-boxed-90],
   div[data-theme-boxed-95] {
+    display: block;
     margin: 0.5em 0;
-    // Inherit the styles from your main theme
+    // Styles will inherit from your main theme
   }
   
   div[data-theme-scrollable] {
+    display: block;
     margin: 0.5em 0;
     max-height: 300px;
     overflow: auto;
   }
   
   iframe {
+    display: block;
     max-width: 100%;
     margin: 0.5em 0;
   }
   
   table {
+    display: table;
     border-collapse: collapse;
     width: 100%;
     margin: 0.5em 0;
     font-size: 0.9em;
     
+    thead {
+      display: table-header-group;
+    }
+    
+    tbody {
+      display: table-row-group;
+    }
+    
+    tr {
+      display: table-row;
+    }
+    
     th, td {
+      display: table-cell;
       border: 1px solid var(--primary-low);
       padding: 0.5em;
       text-align: left;
@@ -170,15 +237,33 @@
     background: var(--primary-very-low);
   }
   
+  // Codeblock buttons
+  .codeblock-buttons {
+    display: block;
+    position: relative;
+  }
+  
   // Lightbox images
   .lightbox-wrapper {
+    display: block;
     margin: 0.5em 0;
   }
   
   // Onebox embeds
   .onebox {
+    display: block;
     margin: 0.5em 0;
     max-width: 100%;
+  }
+  
+  // Links
+  a {
+    color: var(--tertiary);
+    text-decoration: underline;
+    
+    &:hover {
+      color: var(--tertiary-high);
+    }
   }
 }
 
