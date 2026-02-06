@@ -25,7 +25,7 @@ class InlineDivtip extends Component {
           href
           role="button"
           {{on "click" this.preventDefault}}
-        >{{@data.triggerText}}</a>
+        >{{htmlSafe @data.triggerText}}</a>
       </:trigger>
       <:content>
         {{htmlSafe @data.divtipContent}}
