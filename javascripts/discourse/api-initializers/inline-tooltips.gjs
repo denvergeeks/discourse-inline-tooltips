@@ -15,6 +15,8 @@ class InlineDivtip extends Component {
     <DTooltip
       @identifier="inline-divtip"
       @interactive={{true}}
+      @inline={{true}}
+      {{! ☝️ THIS IS THE KEY - @inline={{true}} makes it display inline }}
       @closeOnScroll={{false}}
       @closeOnClickOutside={{true}}
       @maxWidth={{600}}
@@ -62,7 +64,7 @@ export default apiInitializer("1.14.0", (api) => {
           return;
         }
 
-        // Get the content (innerHTML of the div) - this is already cooked HTML
+        // Get the content (innerHTML of the div)
         const divtipContent = div.innerHTML.trim();
         
         if (!divtipContent) {
@@ -78,7 +80,7 @@ export default apiInitializer("1.14.0", (api) => {
           div.parentNode.insertBefore(wrapper, div);
         }
         
-        // Now render the component into the wrapper
+        // Now render the component into the wrapper using inline template
         helper.renderGlimmer(wrapper, InlineDivtip, {
           triggerText: triggerText,
           divtipContent: divtipContent
