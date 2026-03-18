@@ -111,6 +111,17 @@
     font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
     white-space: pre-wrap !important;
   }
+
+  /* Preserve whitespace in Discourse code blocks */
+  pre,
+  code,
+  pre > code {
+      /* allow wrapping while still preserving spaces */
+      white-space: pre-wrap !important;
+      /* keep spaces, tabs and line breaks */
+      /*  white-space: pre;  */
+  }
+
   
   /* Code blocks */
   pre {
