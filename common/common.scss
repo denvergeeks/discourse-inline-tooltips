@@ -109,7 +109,7 @@
     border-radius: 3px;
     font-size: 0.9em;
     font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
-    white-space: pre-wrap;
+    white-space: pre-wrap !important;
   }
   
   /* Code blocks */
@@ -120,11 +120,12 @@
     border-radius: 4px;
     overflow: auto;
     margin: 0.5em 0;
+    white-space: pre-wrap !important;
     
     code {
       background: none;
       padding: 0;
-      white-space: pre-wrap;
+      white-space: pre-wrap !important;
     }
   }
   
