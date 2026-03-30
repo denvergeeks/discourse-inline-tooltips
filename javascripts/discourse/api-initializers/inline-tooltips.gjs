@@ -27,10 +27,10 @@ class InlineTip extends Component {
           href
           role="button"
           {{on "click" this.preventDefault}}
-        >{{htmlSafe @data.triggerText}}</a>
+        >{{trustHTML @data.triggerText}}</a>
       </:trigger>
       <:content>
-        {{htmlSafe @data.tipContent}}
+        {{trustHTML @data.tipContent}}
       </:content>
     </DTooltip>
   </template>
