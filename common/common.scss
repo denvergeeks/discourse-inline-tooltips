@@ -15,6 +15,17 @@
   }
 }
 
+/* Dark mode adjustments */
+body.dark-mode {
+  .expand-tip {
+    color: var(--tertiary);
+    
+    &:hover {
+      color: var(--tertiary-high);
+    }
+  }
+}
+
 /* Make the paragraph before the tip wrapper appear inline */
 p:has(+ .inline-tip-wrapper) {
   display: inline;
