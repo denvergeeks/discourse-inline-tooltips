@@ -20,7 +20,7 @@
 }
 
 /* Float Kit tooltip content styling */
-.fk-d-tooltip__content.inline-tip-content[data-identifier="inline-tip"] {
+.fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   display: block !important;
