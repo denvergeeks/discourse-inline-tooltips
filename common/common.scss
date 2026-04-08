@@ -277,7 +277,7 @@ p + .inline-tip-wrapper::before {
     
     /* Lightbox images */
     .lightbox-wrapper {
-      display: block;
+      display: flex;
       img {
         cursor: zoom-in;
       }
