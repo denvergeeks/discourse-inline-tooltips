@@ -41,7 +41,7 @@
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
-  display: block;
+/* display: block; */
 /* overflow: auto; */
   max-height: 600px;
   width: auto;
