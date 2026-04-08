@@ -23,7 +23,6 @@
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
-  width: min(90vw, 700px);
   display: block !important;
 
   iframe {
@@ -35,6 +34,7 @@
   .fk-d-tooltip__inner-content {
     display: block;
     overflow: auto;
+    width: min(90vw, 700px);
     max-height: 600px;
   }
 
