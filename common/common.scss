@@ -20,23 +20,27 @@
 }
 
 /* Float Kit tooltip content styling */
-.fk-d-tooltip__content[data-identifier="inline-tip"] {
+.fk-d-tooltip__content.inline-tip-content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   display: block !important;
-  width: min(90vw, 700px);
+  width: auto;
 
+  .fk-d-tooltip__inner-content {
+    display: block;
+    overflow: auto;
+    max-height: 600px;
+    width: min(90vw, 700px);
+  }
+
+  
   iframe {
     display: block;
     width: 100%;
     border: 0;
   }
   
-  .fk-d-tooltip__inner-content {
-    display: block;
-    overflow: auto;
-    max-height: 600px;
-  }
+
 
   /* Images */
   img {
