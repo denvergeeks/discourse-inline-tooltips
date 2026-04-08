@@ -1,11 +1,6 @@
 /* Discourse Inline Tooltips - Float Kit DTooltip Version */
 
-/* Wrapper is inline so tooltip trigger stays on same line */
-.inline-tip-wrapper {
-  display: inline;
-}
-
-/* Tooltip trigger styling */
+/* Tooltip trigger text styling */
 .expand-tip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -19,44 +14,42 @@
   }
 }
 
+/* Make the paragraph before the trigger text wrapper appear inline */
+p:has(+ .inline-tip-wrapper) {
+  display: inline;
+  margin: 0;
+}
+
+/* Add space before trigger text wrapper */
+p + .inline-tip-wrapper::before {
+  content: ' ';
+}
+
+/* Make the trigger text wrapper appear inline */
+.inline-tip-wrapper {
+  display: inline;
+}
+
+/* Make the paragraph after the trigger text wrapper appear inline */
+.inline-tip-wrapper + p {
+  display: inline;
+  margin: 0;
+}
+
 /* Float Kit tooltip content styling */
 
 .fk-d-tooltip__inner-content {
-    /* display: flex; */
     font-size: var(--font-down-1);
     line-height: normal;
     align-items: normal;
     flex-direction: column;
     overflow: auto;
-    /* overflow-wrap: break-word; */
-    /* padding: .5rem; */
-
-}
-
-.fk-d-tooltip__inner-content.inline-tip-content[data-identifier="inline-tip"] {
-    display: inline-block;
-    overflow: hidden;
-    overflow-wrap: break-word;
-    padding: .5rem;
-    align-items: center;
 }
 
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
-/* overflow-wrap: break-word; */
-/* display: block; */
-/* overflow: auto; */
   max-height: 600px;
-/* width: auto; */
 
-  /*
-  .fk-d-tooltip__content .fk-d-tooltip__inner-content {
-    display: block;
-    overflow: auto;
-    width: min(90vw, 700px);
-    width: 100%
-  }
-*/
-
+  /* Iframes */
   iframe {
     display: block;
     width: 100%;
@@ -369,27 +362,6 @@ body.dark-mode {
   }
 }
 
-/* Make paragraphs before tooltip appear inline */
-p:has(+ .inline-tip-wrapper) {
-  display: inline;
-  margin: 0;
-}
-
-/* Make the tooltip wrapper inline */
-.inline-tip-wrapper {
-  display: inline;
-}
-
-/* Make paragraphs after tooltip appear inline */
-.inline-tip-wrapper + p {
-  display: inline;
-  margin: 0;
-}
-
-/* Add space before wrapper */
-p + .inline-tip-wrapper::before {
-  content: ' ';
-}
 
 /* Add space after wrapper */
 .inline-tip-wrapper + p::before {
