@@ -53,16 +53,14 @@
     width: 100%
   }
 
-  
   iframe {
     display: block;
     width: 100%;
     width: min(90vw, 700px);
+    aspect-ratio: var(--iframe-ratio, 16 / 9);
     border: 0;
   }
   
-
-
   /* Images */
   img {
     height: auto;
