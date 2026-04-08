@@ -20,6 +20,15 @@
 }
 
 /* Float Kit tooltip content styling */
+
+.fk-d-tooltip__inner-content.inline-tip-content[data-identifier="inline-tip"] {
+    display: inline-block;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    padding: .5rem;
+    align-items: center;
+}
+
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
