@@ -24,6 +24,7 @@
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   display: block !important;
+      width: min(90vw, 700px);
 
   iframe {
     display: block;
@@ -34,7 +35,6 @@
   .fk-d-tooltip__inner-content {
     display: block;
     overflow: auto;
-    width: min(90vw, 700px);
     max-height: 600px;
   }
 
