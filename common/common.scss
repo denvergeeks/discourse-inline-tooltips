@@ -1,6 +1,7 @@
 /*** DISCOURSE INLINE TOOLTIPS - Float Kit DTooltip Version - @denvergeeks ***/
 
 /*** Tooltip Trigger Tip and Tip Wrapper Styling ***/
+
 .expand-tip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -349,18 +350,8 @@ p + .inline-tip-wrapper::before {
   }
 }
 
-/* Dark mode adjustments */
-body.dark-mode {
-  .expand-tip {
-    color: var(--tertiary);
-    
-    &:hover {
-      color: var(--tertiary-high);
-    }
-  }
-}
+/*** Mobile responsive - adjust tooltip max-width on small screens ***/
 
-/* Mobile responsive - adjust tooltip max-width on small screens */
 @media (max-width: 768px) {
   .fk-d-tooltip__content[data-identifier="inline-tip"] {
     max-width: 90vw;
