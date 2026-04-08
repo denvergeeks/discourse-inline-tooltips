@@ -31,12 +31,14 @@
     overflow: auto;
     max-height: 600px;
     width: min(90vw, 700px);
+    width: 100%
   }
 
   
   iframe {
     display: block;
     width: 100%;
+    width: min(90vw, 700px);
     border: 0;
   }
   
