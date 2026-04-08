@@ -21,6 +21,15 @@
 
 /* Float Kit tooltip content styling */
 
+.fk-d-tooltip__inner-content {
+    display: flex;
+    overflow: auto;
+    overflow-wrap: break-word;
+    padding: .5rem;
+    align-items: center;
+    flex-direction: column;
+}
+
 .fk-d-tooltip__inner-content.inline-tip-content[data-identifier="inline-tip"] {
     display: inline-block;
     overflow: hidden;
