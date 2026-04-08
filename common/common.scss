@@ -24,7 +24,7 @@
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   display: block !important;
-  overflow: auto !important;
+  /* overflow: auto !important; */
   width: auto;
 
   .fk-d-tooltip__content .fk-d-tooltip__inner-content {
