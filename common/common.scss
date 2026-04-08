@@ -24,13 +24,13 @@
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   display: block;
-  overflow: auto;
+  /* overflow: auto; */
   max-height: 600px;
   width: auto;
 
   .fk-d-tooltip__content .fk-d-tooltip__inner-content {
     display: block;
-    overflow: auto;
+    /* overflow: auto; */
     width: min(90vw, 700px);
     width: 100%
   }
