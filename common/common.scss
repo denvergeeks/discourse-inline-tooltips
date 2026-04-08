@@ -166,7 +166,6 @@ p + .inline-tip-wrapper::before {
       padding: 1em;
       border-radius: 4px;
       overflow: auto;
-      margin: 0.5em 0;
       white-space: pre-wrap !important;
       
       code {
@@ -179,7 +178,6 @@ p + .inline-tip-wrapper::before {
     /* Lists */
     ul, ol {
       display: block;
-      margin: 0.5em 0;
       padding-left: 2em;
     }
     
@@ -203,7 +201,6 @@ p + .inline-tip-wrapper::before {
       display: block;
       border-left: 4px solid var(--primary-low);
       padding-left: 1em;
-      margin: 0.5em 0;
       color: var(--primary-medium);
     }
     
@@ -211,7 +208,6 @@ p + .inline-tip-wrapper::before {
     /*
     div[data-theme-scrollable] {
       display: block;
-      margin: 0.5em 0;
       max-height: 300px;
       overflow: auto;
       
@@ -226,7 +222,6 @@ p + .inline-tip-wrapper::before {
       display: table;
       border-collapse: collapse;
       width: 100%;
-      margin: 0.5em 0;
       font-size: 0.9em;
       
       thead { 
@@ -283,8 +278,6 @@ p + .inline-tip-wrapper::before {
     /* Lightbox images */
     .lightbox-wrapper {
       display: block;
-      margin: 0.5em 0;
-      
       img {
         cursor: zoom-in;
       }
@@ -310,7 +303,6 @@ p + .inline-tip-wrapper::before {
     /* Onebox embeds */
     .onebox {
       display: block;
-      margin: 0.5em 0;
       max-width: 100%;
       border: 1px solid var(--primary-low);
       padding: 0.5em;
@@ -320,7 +312,6 @@ p + .inline-tip-wrapper::before {
     /* Video embeds */
     .video-onebox {
       display: block;
-      margin: 0.5em 0;
       
       video {
         max-width: 100%;
