@@ -1,6 +1,6 @@
 /*** DISCOURSE INLINE TOOLTIPS - Float Kit DTooltip Version - @denvergeeks ***/
 
-/*** Tooltip Trigger Text Styling ***/
+/*** Tooltip Trigger Tip and Tip Wrapper Styling ***/
 .expand-tip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -14,23 +14,28 @@
   }
 }
 
-/* Make the paragraph before the trigger text wrapper appear inline */
+/* Make the paragraph before the tip wrapper appear inline */
 p:has(+ .inline-tip-wrapper) {
   display: inline;
   margin: 0;
 }
 
-/* Add space before trigger text wrapper */
+/* Add space before tip wrapper */
 p + .inline-tip-wrapper::before {
   content: ' ';
 }
 
-/* Make the trigger text wrapper appear inline */
+/* Make the tip wrapper appear inline */
 .inline-tip-wrapper {
   display: inline;
 }
 
-/* Make the paragraph after the trigger text wrapper appear inline */
+/* Add space after the tip wrapper */
+.inline-tip-wrapper + p::before {
+  content: ' ';
+}
+
+/* Make the paragraph after the tip wrapper appear inline */
 .inline-tip-wrapper + p {
   display: inline;
   margin: 0;
@@ -38,309 +43,309 @@ p + .inline-tip-wrapper::before {
 
 /*** Float Kit DTooltip Content Styling ***/
 
-.fk-d-tooltip__inner-content {
+.fk-d-tooltip__content[data-identifier="inline-tip"] {
+  max-height: 600px;
+
+  .fk-d-tooltip__inner-content {
     font-size: var(--font-down-1);
     line-height: normal;
     align-items: normal;
     flex-direction: column;
     overflow: auto;
-}
 
-.fk-d-tooltip__content[data-identifier="inline-tip"] {
-  max-height: 600px;
-
-  /* Iframes */
-  iframe {
-    display: block;
-    width: 100%;
-    width: min(90vw, 700px);
-    aspect-ratio: var(--iframe-ratio, 16 / 9);
-    border: 0;
-  }
-  
-  /* Images */
-  img {
-    height: auto;
-    max-width: 100%;
-    display: block;
-    margin: 0.5em 0;
-  }
-
-  /* Paragraphs */
-  p {
-    /* margin: 0 0 0.75em 0; */
-    margin: 0;
-    display: block;
-    
-    &:first-child {
-      /* margin-top: 0; */
-      margin: 0;
-    }
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-  
-  /* Headings */
-  h1, h2, h3, h4, h5, h6 {
-    display: block;
-    margin: 1em 0 0.5em 0;
-    font-weight: bold;
-    line-height: 1.3;
-    
-    &:first-child {
-      margin-top: 0;
-    }
-    
-    /* Hide anchor links in tooltips */
-    a.anchor {
-      display: none !important;
-    }
-  }
-  
-  h1 { font-size: 1.5em; }
-  h2 { font-size: 1.4em; }
-  h3 { font-size: 1.3em; }
-  h4 { font-size: 1.2em; }
-  h5 { font-size: 1.1em; }
-  h6 { font-size: 1em; }
-  
-  /* Horizontal rules */
-  hr {
-    display: block;
-    margin: 1em 0;
-    border: 0;
-    border-top: 1px solid var(--primary-low);
-    height: 0;
-  }
-  
-  /* Text formatting */
-  strong, b {
-    font-weight: bold;
-  }
-  
-  em, i {
-    font-style: italic;
-  }
-
-  /* Inline code */
-  code {
-    background: var(--primary-very-low);
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-size: 0.9em;
-    font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
-    white-space: pre-wrap !important;
-  }
-
-  /* Preserve whitespace in Discourse code blocks */
-  pre,
-  code,
-  pre > code {
-      /* allow wrapping while still preserving spaces */
-      white-space: pre-wrap !important;
-      /* keep spaces, tabs and line breaks */
-      /*  white-space: pre;  */
-  }
-  
-  /* Code blocks */
-  pre {
-    display: block;
-    background: var(--primary-very-low);
-    padding: 1em;
-    border-radius: 4px;
-    overflow: auto;
-    margin: 0.5em 0;
-    white-space: pre-wrap !important;
-    
-    code {
-      background: none;
-      padding: 0;
-      white-space: pre-wrap !important;
-    }
-  }
-  
-  /* Lists */
-  ul, ol {
-    display: block;
-    margin: 0.5em 0;
-    padding-left: 2em;
-  }
-  
-  ul {
-    list-style-type: disc;
-    list-style-position: outside;
-  }
-  
-  ol {
-    list-style-type: decimal;
-    list-style-position: outside;
-  }
-  
-  li {
-    display: list-item;
-    margin: 0.25em 0;
-  }
-  
-  /* Blockquotes */
-  blockquote {
-    display: block;
-    border-left: 4px solid var(--primary-low);
-    padding-left: 1em;
-    margin: 0.5em 0;
-    color: var(--primary-medium);
-  }
-  
-  /* Scrollable content */
-  /*
-  div[data-theme-scrollable] {
-    display: block;
-    margin: 0.5em 0;
-    max-height: 300px;
-    overflow: auto;
-    
-    .scrollable-content-inner {
+    /* Iframes */
+    iframe {
       display: block;
+      width: 100%;
+      width: min(90vw, 700px);
+      aspect-ratio: var(--iframe-ratio, 16 / 9);
+      border: 0;
     }
-  }
-  */
+    
+    /* Images */
+    img {
+      height: auto;
+      max-width: 100%;
+      display: block;
+      margin: 0.5em 0;
+    }
   
-  /* Tables */
-  table {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0.5em 0;
-    font-size: 0.9em;
-    
-    thead { 
-      display: table-header-group; 
+    /* Paragraphs */
+    p {
+      /* margin: 0 0 0.75em 0; */
+      margin: 0;
+      display: block;
+      
+      &:first-child {
+        /* margin-top: 0; */
+        margin: 0;
+      }
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     
-    tbody { 
-      display: table-row-group; 
+    /* Headings */
+    h1, h2, h3, h4, h5, h6 {
+      display: block;
+      margin: 1em 0 0.5em 0;
+      font-weight: bold;
+      line-height: 1.3;
+      
+      &:first-child {
+        margin-top: 0;
+      }
+      
+      /* Hide anchor links in tooltips */
+      a.anchor {
+        display: none !important;
+      }
     }
     
-    tr { 
-      display: table-row; 
+    h1 { font-size: 1.5em; }
+    h2 { font-size: 1.4em; }
+    h3 { font-size: 1.3em; }
+    h4 { font-size: 1.2em; }
+    h5 { font-size: 1.1em; }
+    h6 { font-size: 1em; }
+    
+    /* Horizontal rules */
+    hr {
+      display: block;
+      margin: 1em 0;
+      border: 0;
+      border-top: 1px solid var(--primary-low);
+      height: 0;
     }
     
-    th, td {
-      display: table-cell;
-      border: 1px solid var(--primary-low);
-      padding: 0.5em;
-      text-align: left;
-    }
-    
-    th {
-      background: var(--primary-very-low);
+    /* Text formatting */
+    strong, b {
       font-weight: bold;
     }
-  }
-  
-  /* Syntax highlighting */
-  .hljs {
-    background: var(--primary-very-low);
-    display: block;
-  }
-  
-  /* Code block buttons */
-  .codeblock-buttons {
-    position: relative;
     
-    .codeblock-button-wrapper {
-      position: absolute;
-      right: 0;
-      top: 0;
+    em, i {
+      font-style: italic;
+    }
+  
+    /* Inline code */
+    code {
+      background: var(--primary-very-low);
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+      font-family: var(--font-family-monospace, Consolas, Monaco, monospace);
+      white-space: pre-wrap !important;
+    }
+  
+    /* Preserve whitespace in Discourse code blocks */
+    pre,
+    code,
+    pre > code {
+        /* allow wrapping while still preserving spaces */
+        white-space: pre-wrap !important;
+        /* keep spaces, tabs and line breaks */
+        /*  white-space: pre;  */
     }
     
-    .btn {
-      background: var(--primary-low);
-      border: 1px solid var(--primary-medium);
+    /* Code blocks */
+    pre {
+      display: block;
+      background: var(--primary-very-low);
+      padding: 1em;
+      border-radius: 4px;
+      overflow: auto;
+      margin: 0.5em 0;
+      white-space: pre-wrap !important;
       
-      &:hover {
-        background: var(--primary-medium);
+      code {
+        background: none;
+        padding: 0;
+        white-space: pre-wrap !important;
       }
     }
-  }
-  
-  /* Lightbox images */
-  .lightbox-wrapper {
-    display: block;
-    margin: 0.5em 0;
     
-    img {
-      cursor: zoom-in;
+    /* Lists */
+    ul, ol {
+      display: block;
+      margin: 0.5em 0;
+      padding-left: 2em;
     }
     
-    .meta {
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      font-size: 0.85em;
+    ul {
+      list-style-type: disc;
+      list-style-position: outside;
+    }
+    
+    ol {
+      list-style-type: decimal;
+      list-style-position: outside;
+    }
+    
+    li {
+      display: list-item;
+      margin: 0.25em 0;
+    }
+    
+    /* Blockquotes */
+    blockquote {
+      display: block;
+      border-left: 4px solid var(--primary-low);
+      padding-left: 1em;
+      margin: 0.5em 0;
       color: var(--primary-medium);
-      margin-top: 0.25em;
+    }
+    
+    /* Scrollable content */
+    /*
+    div[data-theme-scrollable] {
+      display: block;
+      margin: 0.5em 0;
+      max-height: 300px;
+      overflow: auto;
       
-      .filename {
-        font-weight: 500;
-      }
-      
-      .informations {
-        color: var(--primary-high);
+      .scrollable-content-inner {
+        display: block;
       }
     }
-  }
-  
-  /* Onebox embeds */
-  .onebox {
-    display: block;
-    margin: 0.5em 0;
-    max-width: 100%;
-    border: 1px solid var(--primary-low);
-    padding: 0.5em;
-    border-radius: 4px;
-  }
-  
-  /* Video embeds */
-  .video-onebox {
-    display: block;
-    margin: 0.5em 0;
+    */
     
-    video {
-      max-width: 100%;
-      height: auto;
+    /* Tables */
+    table {
+      display: table;
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.5em 0;
+      font-size: 0.9em;
+      
+      thead { 
+        display: table-header-group; 
+      }
+      
+      tbody { 
+        display: table-row-group; 
+      }
+      
+      tr { 
+        display: table-row; 
+      }
+      
+      th, td {
+        display: table-cell;
+        border: 1px solid var(--primary-low);
+        padding: 0.5em;
+        text-align: left;
+      }
+      
+      th {
+        background: var(--primary-very-low);
+        font-weight: bold;
+      }
+    }
+    
+    /* Syntax highlighting */
+    .hljs {
+      background: var(--primary-very-low);
       display: block;
     }
-  }
-  
-  /* Links */
-  a {
-    color: var(--tertiary);
-    text-decoration: underline;
     
-    &:hover {
-      color: var(--tertiary-high);
+    /* Code block buttons */
+    .codeblock-buttons {
+      position: relative;
+      
+      .codeblock-button-wrapper {
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+      
+      .btn {
+        background: var(--primary-low);
+        border: 1px solid var(--primary-medium);
+        
+        &:hover {
+          background: var(--primary-medium);
+        }
+      }
     }
     
-    &:visited {
+    /* Lightbox images */
+    .lightbox-wrapper {
+      display: block;
+      margin: 0.5em 0;
+      
+      img {
+        cursor: zoom-in;
+      }
+      
+      .meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        font-size: 0.85em;
+        color: var(--primary-medium);
+        margin-top: 0.25em;
+        
+        .filename {
+          font-weight: 500;
+        }
+        
+        .informations {
+          color: var(--primary-high);
+        }
+      }
+    }
+    
+    /* Onebox embeds */
+    .onebox {
+      display: block;
+      margin: 0.5em 0;
+      max-width: 100%;
+      border: 1px solid var(--primary-low);
+      padding: 0.5em;
+      border-radius: 4px;
+    }
+    
+    /* Video embeds */
+    .video-onebox {
+      display: block;
+      margin: 0.5em 0;
+      
+      video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+    
+    /* Links */
+    a {
       color: var(--tertiary);
+      text-decoration: underline;
+      
+      &:hover {
+        color: var(--tertiary-high);
+      }
+      
+      &:visited {
+        color: var(--tertiary);
+      }
     }
-  }
-  
-  /* Emoji */
-  .emoji {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
-  }
-  
-  /* Discourse mentions */
-  .mention {
-    background: var(--primary-very-low);
-    padding: 0.1em 0.3em;
-    border-radius: 3px;
-    color: var(--primary-high);
+    
+    /* Emoji */
+    .emoji {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
+    
+    /* Discourse mentions */
+    .mention {
+      background: var(--primary-very-low);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      color: var(--primary-high);
+    }
   }
 }
 
@@ -363,7 +368,3 @@ body.dark-mode {
 }
 
 
-/* Add space after wrapper */
-.inline-tip-wrapper + p::before {
-  content: ' ';
-}
