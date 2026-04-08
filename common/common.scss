@@ -1,6 +1,6 @@
-/* Discourse Inline Tooltips - Float Kit DTooltip Version */
+/*** DISCOURSE INLINE TOOLTIPS - Float Kit DTooltip Version - @denvergeeks ***/
 
-/* Tooltip trigger text styling */
+/*** Tooltip Trigger Text Styling ***/
 .expand-tip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -36,7 +36,7 @@ p + .inline-tip-wrapper::before {
   margin: 0;
 }
 
-/* Float Kit tooltip content styling */
+/*** Float Kit DTooltip Content Styling ***/
 
 .fk-d-tooltip__inner-content {
     font-size: var(--font-down-1);
