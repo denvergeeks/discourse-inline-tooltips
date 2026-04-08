@@ -23,11 +23,13 @@
 
 .fk-d-tooltip__inner-content {
     /* display: flex; */
+    font-size: var(--font-down-1);
+    align-items: normal;
+    flex-direction: column;
     overflow: auto;
     /* overflow-wrap: break-word; */
     /* padding: .5rem; */
-    align-items: normal;
-    flex-direction: column;
+
 }
 
 .fk-d-tooltip__inner-content.inline-tip-content[data-identifier="inline-tip"] {
@@ -39,8 +41,7 @@
 }
 
 .fk-d-tooltip__content[data-identifier="inline-tip"] {
-  /* overflow-wrap: break-word; */
-  font-size: var(--font-down-1);
+/* overflow-wrap: break-word; */
 /* display: block; */
 /* overflow: auto; */
   max-height: 600px;
