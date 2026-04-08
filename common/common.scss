@@ -24,16 +24,14 @@
   overflow-wrap: break-word;
   font-size: var(--font-down-1);
   /* max-width: 600px; */
-  
-width: min(90vw, 700px);
-display: block !important;
+  width: min(90vw, 700px);
+  display: block !important;
 
-iframe {
-  display: block;
-  width: 100%;
-  border: 0;
-}
-
+  iframe {
+    display: block;
+    width: 100%;
+    border: 0;
+  }
   
   .fk-d-tooltip__inner-content {
     display: block;
